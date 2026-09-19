@@ -1,0 +1,2456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saksham Gupta | Backend & Applied AI Engineer Portfolio</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Phosphor Icons & Devicons for Tech Logos -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+
+    <style>
+        /* --- CSS Reset --- */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 85px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-navy: #101a2e;
+            --panel-gray: #d1d5db;
+            --text-white: #ffffff;
+            --accent-red: #e32929;
+            --accent-yellow: #f5c542;
+            --accent-cyan: #00e5ff;
+            --accent-violet: #a020f0;
+            --contact-maroon: #6b1c1c; 
+            --font-main: 'IBM Plex Mono', monospace;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --border-width: 2px;
+        }
+
+        /* --- CRT Scanline Overlay --- */
+        #crt-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9998;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 3px, 6px 100%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body.crt-active #crt-overlay {
+            opacity: 1;
+        }
+
+        /* --- Scroll Reveal Animations --- */
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Custom Cursor --- */
+        #cursor {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: var(--text-white);
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-white);
+            background-color: var(--bg-navy);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Navigation Bar --- */
+        .tech-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(16, 26, 46, 0.9);
+            border-bottom: var(--border-width) solid var(--text-white);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            gap: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 0.3rem;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-item {
+            font-family: var(--font-main);
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 0.3rem 0.5rem;
+            border: var(--border-width) solid transparent;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--text-white);
+            color: var(--bg-navy);
+            border-color: var(--accent-red);
+            transform: translateY(-2px);
+        }
+
+        .nav-tools {
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+        }
+
+        .nav-tool-btn {
+            background: #080c16;
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            padding: 0.3rem 0.5rem;
+            font-size: 0.75rem;
+            font-family: var(--font-main);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .nav-tool-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-navy);
+        }
+
+        @media (max-width: 1100px) {
+            .tech-nav { gap: 1rem; }
+            .nav-item { padding: 0.3rem 0.4rem; font-size: 0.65rem; }
+            .nav-tool-btn { padding: 0.3rem 0.4rem; font-size: 0.65rem; }
+        }
+
+        @media (max-width: 900px) {
+            .tech-nav {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                justify-content: center;
+                gap: 0.8rem;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.3rem;
+            }
+            html { scroll-padding-top: 150px; }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button, .btn {
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+        }
+
+        /* --- Section Styling --- */
+        section {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- Canvas Background --- */
+        #space-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* --- Hero Section --- */
+        #hero {
+            min-height: 100vh;
+            padding: 8rem 1rem 4rem 1rem;
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
+        }
+
+        #hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        #hero .subtitle {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            padding: 0 1rem;
+        }
+
+        .cta-btn {
+            background-color: var(--accent-red);
+            color: var(--text-white);
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            margin-top: 1rem;
+        }
+
+        .cta-btn:hover {
+            background-color: #c22121;
+        }
+
+        /* --- About Terminal --- */
+        .about-terminal {
+            width: 100%;
+            max-width: 750px;
+            margin: 3rem auto 0 auto;
+            background-color: rgba(16, 26, 46, 0.85);
+            border: var(--border-width) solid var(--panel-gray);
+            padding: 2.5rem;
+            text-align: left;
+            position: relative;
+        }
+
+        .about-terminal::before {
+            content: '';
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+        }
+
+        .typewriter-container {
+            font-family: var(--font-heading);
+            font-size: 1.35rem;
+            color: var(--text-white);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+            min-height: 48px;
+        }
+
+        .tw-cursor {
+            color: var(--accent-red);
+            font-weight: bold;
+            animation: tw-blink 1s step-end infinite;
+        }
+
+        @keyframes tw-blink { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0; } 
+        }
+
+        .about-content p {
+            font-family: var(--font-main);
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--panel-gray);
+            margin-bottom: 1.2rem;
+        }
+
+        .about-content p:last-child { 
+            margin-bottom: 0; 
+        }
+
+        /* --- Tech Stack (Systems Bay) --- */
+        #tech {
+            padding: 5rem 1rem 8rem 1rem;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 800px;
+        }
+
+        #tech h2 {
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        .station-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .station-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .station-col {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            flex: 1;
+            max-width: 380px;
+            z-index: 5;
+        }
+
+        .station-core-wrapper {
+            flex: 0 0 240px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .station-module {
+            background: linear-gradient(145deg, rgba(12, 18, 33, 0.9), rgba(6, 9, 17, 0.95));
+            backdrop-filter: blur(8px);
+            border: 1px solid #1a2744;
+            border-top: 2px solid #233454;
+            border-left: 2px solid #233454;
+            border-radius: 4px;
+            position: relative;
+            padding: 1.5rem;
+            box-shadow: 
+                8px 8px 15px rgba(0, 0, 0, 0.6), 
+                inset -2px -2px 10px rgba(0, 0, 0, 0.5),
+                inset 2px 2px 10px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .station-module::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
+            transform: skewX(-20deg);
+            pointer-events: none;
+            transition: left 0.7s ease-in-out;
+        }
+        
+        .station-module:hover::after {
+            left: 200%;
+        }
+
+        .module-frame-tl {
+            position: absolute; top: -1px; left: -1px; width: 15px; height: 15px;
+            border-top: 2px solid var(--accent-cyan); border-left: 2px solid var(--accent-cyan);
+            opacity: 0.5; transition: all 0.3s;
+        }
+        .module-frame-br {
+            position: absolute; bottom: -1px; right: -1px; width: 15px; height: 15px;
+            border-bottom: 2px solid var(--accent-cyan); border-right: 2px solid var(--accent-cyan);
+            opacity: 0.5; transition: all 0.3s;
+        }
+
+        .module-telemetry {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px dashed rgba(255,255,255,0.15);
+            padding-bottom: 6px; margin-bottom: 15px;
+        }
+        .telemetry-text {
+            font-size: 0.65rem; color: #6b82a8; font-family: var(--font-main);
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+        .telemetry-lights {
+            display: flex; gap: 5px;
+        }
+        .t-light { width: 6px; height: 6px; border-radius: 50%; }
+        .t-light.red { background: var(--accent-red); box-shadow: 0 0 5px var(--accent-red); }
+        .t-light.cyan { background: var(--accent-cyan); box-shadow: 0 0 5px var(--accent-cyan); animation: t-blink 2s infinite; }
+
+        @keyframes t-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .module-title {
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            color: var(--text-white);
+            margin-bottom: 1rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .tech-terminals {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .terminal-node {
+            width: 42px; height: 42px;
+            background: #080c16;
+            border: 1px solid #1f2e4d;
+            border-radius: 4px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.3rem;
+            color: #5c7499;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+        }
+
+        .terminal-node::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 4px 4px; opacity: 0.3; pointer-events: none;
+        }
+
+        .terminal-tooltip {
+            position: absolute;
+            bottom: 125%; left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(10, 15, 30, 0.95);
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            font-family: var(--font-main);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: 2px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+            z-index: 30;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .terminal-node:hover {
+            background: rgba(0, 229, 255, 0.15);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan) !important;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3), inset 0 0 10px rgba(0, 229, 255, 0.2);
+            transform: translateY(-2px);
+            z-index: 20;
+        }
+        .terminal-node:hover .terminal-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Central Hub / Core */
+        .orbital-hub {
+            width: 220px; height: 220px;
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .hub-ring {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hub-ring-outer {
+            width: 100%; height: 100%;
+            border: var(--border-width) dashed rgba(255, 255, 255, 0.2);
+            border-top: var(--border-width) solid var(--accent-red);
+            border-bottom: var(--border-width) solid var(--accent-red);
+            animation: core-spin 25s linear infinite;
+        }
+        .hub-ring-inner {
+            width: 75%; height: 75%;
+            border: var(--border-width) solid rgba(255, 255, 255, 0.05);
+            border-left: var(--border-width) solid var(--accent-yellow);
+            border-right: var(--border-width) solid var(--accent-yellow);
+            animation: core-spin-rev 20s linear infinite;
+        }
+        .hub-core {
+            width: 55%; height: 55%;
+            border-radius: 50%;
+            background: linear-gradient(145deg, var(--bg-navy), #050810);
+            border: var(--border-width) solid var(--text-white);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+            display: flex; justify-content: center; align-items: center;
+            text-align: center;
+            z-index: 10;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .hub-core::after {
+            content: ''; position: absolute; inset: -8px;
+            border-radius: 50%; 
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            animation: core-mech-spin 10s infinite linear;
+        }
+        .hub-text {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            color: var(--text-white);
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        @keyframes core-spin { 100% { transform: rotate(360deg); } }
+        @keyframes core-spin-rev { 100% { transform: rotate(-360deg); } }
+        @keyframes core-mech-spin { 100% { transform: rotate(360deg); } }
+
+        .station-cables {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .cable-base {
+            fill: none;
+            stroke: #1a2744;
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+        .cable-glow {
+            fill: none;
+            stroke: var(--accent-cyan);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-dasharray: 6 6;
+            opacity: 0.15;
+            transition: all 0.3s;
+        }
+
+        /* --- Global Interaction State Machine using :has() --- */
+        .station-module:has(.terminal-node:hover), .station-module:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.15), inset 0 0 15px rgba(0, 229, 255, 0.05);
+            transform: translateY(-4px);
+        }
+        .station-module:has(.terminal-node:hover) .module-frame-tl, .station-module:hover .module-frame-tl,
+        .station-module:has(.terminal-node:hover) .module-frame-br, .station-module:hover .module-frame-br {
+            opacity: 1; box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .station-grid:has(.station-module:hover) .station-module:not(:hover) {
+            opacity: 0.4;
+            filter: grayscale(80%) blur(1px);
+        }
+
+        .station-grid:has(.station-module:hover) .hub-core {
+            border-color: var(--accent-red);
+            background: linear-gradient(145deg, #1c0a0a, #050810);
+            transform: scale(1.05);
+            box-shadow: inset 0 0 20px rgba(227, 41, 41, 0.1);
+        }
+        .station-grid:has(.station-module:hover) .hub-ring-outer {
+            animation-duration: 10s;
+            border-top-color: var(--accent-yellow);
+            border-bottom-color: var(--accent-yellow);
+        }
+        .station-grid:has(.station-module:hover) .hub-ring-inner {
+            animation-duration: 8s;
+            border-left-color: var(--accent-red);
+            border-right-color: var(--accent-red);
+        }
+
+        .station-wrapper:has(.mod-lang:hover) .cable-glow.lang,
+        .station-wrapper:has(.mod-genai:hover) .cable-glow.genai,
+        .station-wrapper:has(.mod-db:hover) .cable-glow.db,
+        .station-wrapper:has(.mod-ml:hover) .cable-glow.ml,
+        .station-wrapper:has(.mod-backend:hover) .cable-glow.backend,
+        .station-wrapper:has(.mod-cloud:hover) .cable-glow.cloud,
+        .station-wrapper:has(.terminal-node.locked) .cable-glow {
+            opacity: 1;
+            stroke-width: 3;
+            filter: drop-shadow(0 0 6px var(--accent-cyan));
+            animation: flow-energy 1s linear infinite;
+        }
+
+        @keyframes flow-energy { to { stroke-dashoffset: -12; } }
+
+        @media (max-width: 950px) {
+            .station-grid { flex-direction: column; gap: 1.5rem; }
+            .station-col { max-width: 100%; width: 100%; gap: 1.5rem; }
+            .station-core-wrapper { order: -1; margin-bottom: 1rem; }
+            .station-cables { display: none; }
+            .station-wrapper::before {
+                content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+                background: linear-gradient(to bottom, transparent, rgba(0,229,255,0.2) 10%, rgba(0,229,255,0.2) 90%, transparent);
+                transform: translateX(-50%); z-index: 1;
+            }
+            .station-grid:has(.station-module:hover) .station-module:not(:hover) { opacity: 1; filter: none; }
+        }
+
+        /* --- Mission Log (Vertical Projects) --- */
+        #projects {
+            padding: 4rem 1rem;
+            flex-direction: column;
+        }
+
+        #projects h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Filter Matrix Bar */
+        .filter-matrix {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: #0a1121;
+            color: var(--panel-gray);
+            border: 1px solid var(--panel-gray);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-main);
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--accent-cyan);
+            color: var(--bg-navy);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+        }
+
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .project-row {
+            display: flex;
+            background-color: var(--panel-gray);
+            border: var(--border-width) solid var(--text-white);
+            border-radius: 4px;
+            color: var(--bg-navy);
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .project-row.hidden {
+            display: none !important;
+        }
+
+        .project-row:hover {
+            background-color: var(--text-white);
+            border-color: var(--accent-red);
+            transform: translateX(10px);
+        }
+
+        .project-info {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .project-description {
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #1a2744;
+        }
+
+        ul.project-description {
+            list-style-type: square;
+            padding-left: 1.2rem;
+        }
+
+        ul.project-description li {
+            margin-bottom: 0.3rem;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background-color: var(--bg-navy);
+            color: var(--text-white);
+            padding: 0.3rem 0.8rem;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .project-row:hover .tag {
+            background-color: var(--accent-red);
+        }
+
+        .card-footer a {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            color: var(--bg-navy);
+        }
+
+        .card-footer a:hover {
+            opacity: 1;
+            color: var(--accent-red);
+        }
+
+        .project-schema {
+            width: 260px;
+            min-height: 280px;
+            border-left: var(--border-width) solid var(--bg-navy);
+            background-color: var(--bg-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            transition: all 0.2s;
+        }
+
+        .project-row:hover .project-schema {
+            border-left-color: var(--accent-red);
+        }
+
+        .flow-svg {
+            width: 100%;
+            height: 100%;
+            max-width: 240px;
+            max-height: 300px;
+        }
+
+        /* --- Timeline & Sections --- */
+        .timeline-section {
+            padding: 4rem 1rem;
+            flex-direction: column;
+        }
+        .timeline-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        .timeline {
+            border-left: 4px solid var(--text-white);
+            padding-left: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .timeline-item {
+            position: relative;
+            background-color: var(--panel-gray);
+            color: var(--bg-navy);
+            padding: 1.5rem;
+            border: var(--border-width) solid var(--bg-navy);
+            transition: all 0.2s;
+        }
+        .timeline-item:hover {
+            background-color: var(--text-white);
+            border-color: var(--accent-red);
+            transform: translateX(10px);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.8rem;
+            top: 1.5rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            background-color: var(--accent-red);
+            border: 2px solid var(--text-white);
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        .timeline-item:hover::before {
+            background-color: var(--accent-yellow);
+            transform: scale(1.2);
+        }
+
+        /* --- Interactive Systems Circuit --- */
+        .circuit-wrapper {
+            position: relative;
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: var(--bg-navy);
+            border: var(--border-width) solid var(--text-white);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .circuit-bg-fx {
+            position: absolute; inset: 0;
+            background-image: repeating-linear-gradient(90deg, transparent 0, transparent 60px, rgba(255, 255, 255, 0.03) 60px, rgba(255, 255, 255, 0.03) 61px);
+            background-size: 200% 100%;
+            animation: warp-speed 20s linear infinite;
+            z-index: 0; pointer-events: none;
+        }
+        @keyframes warp-speed { 0% { background-position: 200% 0; } 100% { background-position: 0% 0; } }
+
+        .circuit-svg-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 900 / 350;
+            margin: 0 auto;
+            z-index: 2;
+        }
+        .circuit-lines {
+            width: 100%; height: 100%;
+            display: block;
+        }
+        
+        .c-node {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-navy);
+            border: var(--border-width) solid var(--panel-gray);
+            padding: 5px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            white-space: nowrap;
+            z-index: 10;
+        }
+        .c-node::before {
+            content: ''; position: absolute; top:-4px; left:-4px; width: 8px; height: 8px;
+            border-top: var(--border-width) solid var(--accent-red); border-left: var(--border-width) solid var(--accent-red);
+            opacity: 0; transition: opacity 0.2s;
+        }
+        .c-node::after {
+            content: ''; position: absolute; bottom:-4px; right:-4px; width: 8px; height: 8px;
+            border-bottom: var(--border-width) solid var(--accent-red); border-right: var(--border-width) solid var(--accent-red);
+            opacity: 0; transition: opacity 0.2s;
+        }
+        .c-node:hover, .c-node.active {
+            border-color: var(--accent-red);
+            background-color: var(--text-white);
+            transform: translate(-50%, -8px);
+            z-index: 20;
+        }
+        .c-node:hover::before, .c-node:hover::after, .c-node.active::before, .c-node.active::after { opacity: 1; }
+        
+        .n-num {
+            background-color: var(--panel-gray); color: var(--bg-navy);
+            font-weight: bold; padding: 4px 8px; font-family: var(--font-main);
+            transition: all 0.2s;
+        }
+        .c-node:hover .n-num, .c-node.active .n-num {
+            background-color: var(--accent-red); color: var(--text-white);
+        }
+        .n-text {
+            color: var(--text-white); font-family: var(--font-heading); font-size: 0.95rem; font-weight: bold; padding: 0 12px; letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+        .c-node:hover .n-text, .c-node.active .n-text {
+            color: var(--bg-navy);
+        }
+
+        .c-console {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 235px;
+            background-color: var(--bg-navy);
+            border: var(--border-width) solid var(--text-white);
+            border-top: 4px solid var(--accent-red);
+            padding: 0.8rem;
+            text-align: center;
+            z-index: 5;
+        }
+        .c-console-header {
+            display: flex; align-items: center; gap: 5px; margin-bottom: 0.5rem; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 5px;
+        }
+        .c-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .c-console-lbl { margin-left: auto; font-size: 0.65rem; color: var(--panel-gray); font-family: var(--font-main); letter-spacing: 1px; font-weight: bold; white-space: nowrap; }
+        
+        #c-display-title {
+            color: var(--accent-red); font-size: 0.95rem; margin-bottom: 0.3rem; transition: opacity 0.15s ease; letter-spacing: 1px;
+        }
+        #c-display-desc {
+            font-size: 0.75rem; color: var(--text-white); line-height: 1.4; transition: opacity 0.15s ease; min-height: 35px;
+        }
+
+        @media (max-width: 900px) {
+            .circuit-svg-container { width: 100%; height: auto; }
+            .c-node { transform: translate(-50%, -50%) scale(0.85); }
+            .c-node:hover, .c-node.active { transform: translate(-50%, -50%) scale(0.9); }
+            .c-console { transform: translate(-50%, -50%) scale(0.85); }
+        }
+
+        /* --- Dynamic Marquee --- */
+        .marquee-container {
+            width: 100%;
+            background-color: var(--accent-red);
+            color: var(--text-white);
+            padding: 0.8rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            border-top: var(--border-width) solid var(--text-white);
+            border-bottom: var(--border-width) solid var(--text-white);
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 10;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marqueeScroll 15s linear infinite;
+        }
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .standard-section {
+            padding: 4rem 1rem;
+            flex-direction: column;
+        }
+        .standard-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .milestone-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .milestone-item {
+            background-color: var(--panel-gray);
+            color: var(--bg-navy);
+            padding: 1.5rem 2rem;
+            border-left: 8px solid var(--accent-yellow);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.2s;
+            border-radius: 4px;
+        }
+        .milestone-item:hover {
+            background-color: var(--text-white);
+            border-left-color: var(--accent-red);
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* --- Footer Section (Comms) --- */
+        footer {
+            background-color: var(--contact-maroon);
+            padding: 4rem 1rem;
+            text-align: center;
+            width: 100%;
+            border-top: var(--border-width) solid var(--text-white);
+            position: relative;
+            z-index: 10;
+        }
+
+        footer h2 {
+            margin-bottom: 3rem;
+        }
+
+        .comms-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .comm-channel {
+            display: flex;
+            align-items: center;
+            background-color: #0a1121;
+            border: var(--border-width) solid var(--panel-gray);
+            padding: 0.6rem;
+            border-radius: 4px;
+            width: 310px;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            color: var(--text-white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comm-channel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.4s;
+        }
+        
+        .comm-channel:hover::before {
+            left: 150%;
+        }
+
+        .comm-channel:hover {
+            transform: translateY(-5px);
+        }
+
+        .channel-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--panel-gray);
+            color: var(--bg-navy);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            border-radius: 2px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .channel-details {
+            display: flex;
+            flex-direction: column;
+            margin-left: 1rem;
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .channel-label {
+            font-size: 0.7rem;
+            color: var(--panel-gray);
+            font-family: var(--font-main);
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .channel-value {
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 220px;
+        }
+
+        .comm-channel.gmail:hover {
+            border-color: #EA4335;
+            box-shadow: 6px 6px 0px rgba(234, 67, 53, 0.5);
+        }
+        .comm-channel.gmail:hover .channel-icon {
+            background-color: #EA4335;
+            color: white;
+            transform: scale(1.05);
+        }
+        .comm-channel.gmail:hover .channel-label { color: #EA4335; }
+
+        .comm-channel.linkedin:hover {
+            border-color: #0A66C2;
+            box-shadow: 6px 6px 0px rgba(10, 102, 194, 0.5);
+        }
+        .comm-channel.linkedin:hover .channel-icon {
+            background-color: #0A66C2;
+            color: white;
+            transform: scale(1.05);
+        }
+        .comm-channel.linkedin:hover .channel-label { color: #0A66C2; }
+
+        .comm-channel.github:hover {
+            border-color: #ffffff;
+            box-shadow: 6px 6px 0px rgba(255, 255, 255, 0.5);
+        }
+        .comm-channel.github:hover .channel-icon {
+            background-color: #ffffff;
+            color: black;
+            transform: scale(1.05);
+        }
+        .comm-channel.github:hover .channel-label { color: #ffffff; }
+
+        /* --- CLI Terminal Drawer Modal --- */
+        #cli-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 16, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        #cli-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .cli-box {
+            width: 90%;
+            max-width: 650px;
+            background: #080c16;
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .cli-header {
+            background: #101a2e;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--accent-cyan);
+            font-size: 0.8rem;
+            color: var(--accent-yellow);
+        }
+        .cli-close {
+            cursor: pointer;
+            color: var(--accent-red);
+            font-weight: bold;
+        }
+        .cli-body {
+            padding: 1rem;
+            height: 300px;
+            overflow-y: auto;
+            font-family: var(--font-main);
+            font-size: 0.85rem;
+            color: var(--text-white);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .cli-input-line {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 1rem;
+            background: #050810;
+            border-top: 1px solid #1f2e4d;
+        }
+        .cli-prompt {
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+        .cli-input {
+            background: transparent;
+            border: none;
+            color: var(--text-white);
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            width: 100%;
+            outline: none;
+        }
+
+        /* --- Tech Node Modal / Inspector --- */
+        #node-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 16, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 10001;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        #node-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .node-box {
+            background: #101a2e;
+            border: 2px solid var(--accent-cyan);
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            border-radius: 4px;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        /* --- Resume Modal --- */
+        #resume-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 16, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 10002;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        #resume-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .resume-box {
+            background: #0e1626;
+            border: 2px solid var(--accent-yellow);
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(245, 197, 66, 0.3);
+            text-align: center;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+           .protocol-grid { grid-template-columns: 1fr; }
+           .timeline { margin-left: 1rem; padding-left: 1.5rem; }
+           .timeline-item::before { left: -2.3rem; }
+           .project-row { flex-direction: column; }
+           .project-schema { width: 100%; border-left: none; border-top: var(--border-width) solid var(--bg-navy); padding: 1.5rem; }
+           .flow-svg { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Tactical CRT Overlay -->
+    <div id="crt-overlay"></div>
+
+    <!-- CLI Terminal Drawer -->
+    <div id="cli-modal">
+        <div class="cli-box">
+            <div class="cli-header">
+                <span><span>👾</span> SHIP.CONSOLE // CLI v3.4</span>
+                <span class="cli-close" onclick="toggleCLI()">[X CLOSE]</span>
+            </div>
+            <div class="cli-body" id="cli-output">
+                <div>Welcome, Commander. Type 'help' to list available system commands.</div>
+            </div>
+            <div class="cli-input-line">
+                <span class="cli-prompt">></span>
+                <input type="text" id="cli-input" class="cli-input" placeholder="Type command here..." onkeydown="handleCLI(event)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Tech Node Inspector Modal -->
+    <div id="node-modal" onclick="closeNodeModal()">
+        <div class="node-box" onclick="event.stopPropagation()">
+            <h3 id="node-modal-title" style="color: var(--accent-cyan); margin-bottom: 0.5rem; font-size: 1.2rem;">TECH TITLE</h3>
+            <p id="node-modal-desc" style="font-size: 0.85rem; color: var(--panel-gray); line-height: 1.6; margin-bottom: 1.5rem;">Description goes here.</p>
+            <button class="cta-btn" style="padding: 0.5rem 1rem; font-size: 0.8rem;" onclick="closeNodeModal()">ACKNOWLEDGE</button>
+        </div>
+    </div>
+
+    <!-- Flight Plan / Resume Modal -->
+    <div id="resume-modal" onclick="toggleResumeModal()">
+        <div class="resume-box" onclick="event.stopPropagation()">
+            <h3 style="color: var(--accent-yellow); margin-bottom: 0.5rem; font-size: 1.3rem;">ENGINEER'S LOG</h3>
+            <p style="font-size: 0.85rem; color: var(--panel-gray); line-height: 1.6; margin-bottom: 1.5rem;">Saksham Gupta — Backend & Applied AI Engineer. B.Tech ECE (Punjab Engineering College, 2026).</p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="https://drive.google.com/file/d/1qwdllfQSyIxOaS5qjM9g30e2eXrT98cG/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="cta-btn" style="padding: 0.6rem 1.2rem; font-size: 0.8rem; background: var(--accent-yellow); color: var(--bg-navy);">DECRYPT RESUME</a>
+                <button class="cta-btn" style="padding: 0.6rem 1.2rem; font-size: 0.8rem;" onclick="toggleResumeModal()">CLOSE MANIFEST</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="tech-nav">
+        <div class="nav-tools">
+            <button class="nav-tool-btn" onclick="toggleCLI()" title="Open CLI Terminal">💻 CLI</button>
+            <button class="nav-tool-btn" onclick="toggleResumeModal()" title="View Flight Plan">📋 Resume</button>
+            <button class="nav-tool-btn" onclick="toggleCRT()" title="Toggle CRT Filter">📺 CRT</button>
+            <button class="nav-tool-btn" id="audio-toggle-btn" onclick="toggleAudio()" title="Toggle Sound">🔊 Audio</button>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#hero" class="nav-item" onclick="playAudio()">INIT</a></li>
+            <li><a href="#tech" class="nav-item" onclick="playAudio()">CORE</a></li>
+            <li><a href="#projects" class="nav-item" onclick="playAudio()">MISSIONS</a></li>
+            <li><a href="#philosophy" class="nav-item" onclick="playAudio()">PROTOCOLS</a></li>
+            <li><a href="#education" class="nav-item" onclick="playAudio()">TIMELINE</a></li>
+            <li><a href="#experience" class="nav-item" onclick="playAudio()">FLIGHT LOG</a></li>
+            <li><a href="#comms" class="nav-item" onclick="playAudio()">COMMS</a></li>
+        </ul>
+    </nav>
+
+    <div id="cursor"></div>
+    <canvas id="space-canvas"></canvas>
+
+    <div style="position: relative; z-index: 10;">
+        <section id="hero">
+            <h1>SAKSHAM GUPTA</h1>
+            <p class="subtitle">BACKEND & APPLIED AI ENGINEER | B.TECH ECE</p>
+            
+            <p class="subtitle" style="font-size: 1rem; max-width: 500px; margin-top: 1rem;">Bridging machine-learning capabilities with reliable, scalable software infrastructure.</p>
+            <button class="cta-btn" onclick="scrollToProjects(); playAudio();">VIEW MISSION LOG</button>
+            
+            <div id="about-terminal" class="about-terminal reveal-hidden">
+                <h2 class="typewriter-container">
+                    <span id="tw-text"></span><span class="tw-cursor">_</span>
+                </h2>
+                <div class="about-content">
+                    <p>I like figuring out how things work and how to make them work better. I enjoy breaking messy problems into smaller pieces, experimenting with different approaches, and turning ideas into things people can actually use.</p>
+                    <p>I’ve built scalable backend systems, APIs, cloud services, data pipelines, and intelligent applications, and I’m always thinking about making them simpler, faster, and more reliable.</p>
+                    <p>For me, engineering is mostly about staying curious, building things, breaking them, and learning from what happens.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="marquee-container">
+            <div class="marquee-content">
+                BUILDING → TESTING → OPTIMIZING → SHIPPING &nbsp;//&nbsp; SYSTEMS NOMINAL &nbsp;//&nbsp; PROTOCOLS ENGAGED &nbsp;//&nbsp; BUILDING → TESTING → OPTIMIZING → SHIPPING &nbsp;//&nbsp; SYSTEMS NOMINAL &nbsp;//&nbsp; PROTOCOLS ENGAGED &nbsp;//&nbsp; 
+            </div>
+        </div>
+
+        <section id="tech">
+            <h2>SYSTEMS BAY</h2>
+            
+            <div class="station-wrapper">
+                
+                <svg class="station-cables" viewBox="0 0 1000 650" preserveAspectRatio="xMidYMid meet">
+                    <path class="cable-base" d="M 330 130 C 450 130, 420 325, 500 325" />
+                    <path class="cable-glow lang" d="M 330 130 C 450 130, 420 325, 500 325" />
+                    
+                    <path class="cable-base" d="M 330 325 L 500 325" />
+                    <path class="cable-glow genai" d="M 330 325 L 500 325" />
+                    
+                    <path class="cable-base" d="M 330 520 C 450 520, 420 325, 500 325" />
+                    <path class="cable-glow db" d="M 330 520 C 450 520, 420 325, 500 325" />
+                    
+                    <path class="cable-base" d="M 670 130 C 550 130, 580 325, 500 325" />
+                    <path class="cable-glow ml" d="M 670 130 C 550 130, 580 325, 500 325" />
+                    
+                    <path class="cable-base" d="M 670 325 L 500 325" />
+                    <path class="cable-glow backend" d="M 670 325 L 500 325" />
+                    
+                    <path class="cable-base" d="M 670 520 C 550 520, 580 325, 500 325" />
+                    <path class="cable-glow cloud" d="M 670 520 C 550 520, 580 325, 500 325" />
+                </svg>
+
+                <div class="station-grid">
+                    
+                    <!-- Left Column -->
+                    <div class="station-col">
+                        <div class="station-module mod-lang">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="telemetry-text">SYS.OP.L1</span>
+                                <div class="telemetry-lights"><span class="t-light cyan"></span><span class="t-light cyan"></span></div>
+                            </div>
+                            <h3 class="module-title">LANGUAGES</h3>
+                            <div class="tech-terminals">
+                                <div class="terminal-node" style="color: #3776AB;" onclick="inspectNode('Python', 'Primary core language for backend architectures, script automation, and ML model integration.')"><i class="devicon-python-plain"></i><span class="terminal-tooltip">Python</span></div>
+                                <div class="terminal-node" style="color: #00599C;" onclick="inspectNode('C++', 'High-performance systems programming used for algorithm efficiency and real-time processing.')"><i class="devicon-cplusplus-plain"></i><span class="terminal-tooltip">C++</span></div>
+                                <div class="terminal-node" style="color: #4479A1;" onclick="inspectNode('SQL', 'Database query language utilized across relational databases like MySQL and PostgreSQL.')"><i class="fa-solid fa-database"></i><span class="terminal-tooltip">SQL</span></div>
+                            </div>
+                        </div>
+
+                        <div class="station-module mod-genai">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="telemetry-text">SYS.OP.G2</span>
+                                <div class="telemetry-lights"><span class="t-light cyan"></span><span class="t-light red"></span></div>
+                            </div>
+                            <h3 class="module-title">GENERATIVE AI / LLM</h3>
+                            <div class="tech-terminals">
+                                <div class="terminal-node" style="color: #11999e;" onclick="inspectNode('LangChain', 'Framework for building context-aware reasoning applications and LLM chains.')"><i class="fa-solid fa-link"></i><span class="terminal-tooltip">LangChain</span></div>
+                                <div class="terminal-node" style="color: #00FF9D;" onclick="inspectNode('LangGraph', 'Orchestration library for building stateful, multi-agent actor applications.')">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                                    <span class="terminal-tooltip">LangGraph</span>
+                                </div>
+                                <div class="terminal-node" onclick="inspectNode('Hugging Face', 'Repository and tooling ecosystem for transformer models and tokenizers.')">🤗<span class="terminal-tooltip">Hugging Face</span></div>
+                                <div class="terminal-node" onclick="inspectNode('Ollama', 'Local inference runner for open-weight LLMs like Zephyr-7B and Llama 3.')">🦙<span class="terminal-tooltip">Ollama</span></div>
+                                <div class="terminal-node" style="color: #4285F4;" onclick="inspectNode('Google ADK', 'Agent development kit for building coordinated multi-agent systems.')"><i class="devicon-google-plain"></i><span class="terminal-tooltip">Google ADK</span></div>
+                            </div>
+                        </div>
+
+                        <div class="station-module mod-db">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="telemetry-text">SYS.OP.D3</span>
+                                <div class="telemetry-lights"><span class="t-light cyan"></span><span class="t-light cyan"></span></div>
+                            </div>
+                            <h3 class="module-title">DATABASES / VECTOR SYSTEMS</h3>
+                            <div class="tech-terminals">
+                                <div class="terminal-node" onclick="inspectNode('Pinecone', 'Cloud vector database for low-latency similarity search and RAG indexing.')">🌲<span class="terminal-tooltip">Pinecone</span></div>
+                                <div class="terminal-node" style="color: #FF5A5F;" onclick="inspectNode('ChromaDB', 'Embedded vector database for rapid prototyping of semantic retrieval systems.')"><i class="fa-solid fa-database"></i><span class="terminal-tooltip">ChromaDB</span></div>
+                                <div class="terminal-node" style="color: #47A248;" onclick="inspectNode('MongoDB', 'NoSQL document store for flexible schema design and rapid scaling.')"><i class="devicon-mongodb-plain"></i><span class="terminal-tooltip">MongoDB</span></div>
+                                <div class="terminal-node" style="color: #DC382D;" onclick="inspectNode('Redis', 'In-memory data store used for caching, JWT verification, and OTP states.')"><i class="devicon-redis-plain"></i><span class="terminal-tooltip">Redis</span></div>
+                                <div class="terminal-node" style="color: #4479A1;" onclick="inspectNode('MySQL', 'Relational database for robust transactional operations and structured tables.')"><i class="devicon-mysql-plain"></i><span class="terminal-tooltip">MySQL</span></div>
+                                <div class="terminal-node" style="color: #018BFF;" onclick="inspectNode('Neo4j', 'Graph database for connected data traversal and relationship mapping.')"><i class="devicon-neo4j-plain"></i><span class="terminal-tooltip">Neo4j</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center Column: Core Hub -->
+                    <div class="station-core-wrapper">
+                        <div class="orbital-hub">
+                            <div class="hub-ring hub-ring-outer"></div>
+                            <div class="hub-ring hub-ring-inner"></div>
+                            <div class="hub-core">
+                                <span class="hub-text">ARSENAL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="station-col">
+                        <div class="station-module mod-ml">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="telemetry-text">SYS.OP.M1</span>
+                                <div class="telemetry-lights"><span class="t-light cyan"></span><span class="t-light cyan"></span></div>
+                            </div>
+                            <h3 class="module-title">MACHINE LEARNING / DL</h3>
+                            <div class="tech-terminals">
+                                <div class="terminal-node" style="color: #EE4C2C;" onclick="inspectNode('PyTorch', 'Deep learning framework for building custom neural networks and vision models.')"><i class="devicon-pytorch-plain"></i><span class="terminal-tooltip">PyTorch</span></div>
+                                <div class="terminal-node" style="color: #FF6F00;" onclick="inspectNode('TensorFlow', 'Production machine learning library for training and deploying deep learning pipelines.')"><i class="devicon-tensorflow-original"></i><span class="terminal-tooltip">TensorFlow</span></div>
+                                <div class="terminal-node" style="color: #F7931E;" onclick="inspectNode('Scikit-Learn', 'Library for classical machine learning algorithms and data preprocessing.')"><i class="devicon-scikitlearn-plain"></i><span class="terminal-tooltip">Scikit-Learn</span></div>
+                                <div class="terminal-node" style="color: #013243;" onclick="inspectNode('NumPy', 'Core library for high-performance mathematical array computations in Python.')"><i class="devicon-numpy-plain"></i><span class="terminal-tooltip">NumPy</span></div>
+                                <div class="terminal-node" style="color: #150458;" onclick="inspectNode('Pandas', 'Data analysis and manipulation library for tabular and time-series datasets.')"><i class="devicon-pandas-plain"></i><span class="terminal-tooltip">Pandas</span></div>
+                            </div>
+                        </div>
+
+                        <div class="station-module mod-backend">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="telemetry-text">SYS.OP.B2</span>
+                                <div class="telemetry-lights"><span class="t-light cyan"></span><span class="t-light red"></span></div>
+                            </div>
+                            <h3 class="module-title">BACKEND / WEB</h3>
+                            <div class="tech-terminals">
+                                <div class="terminal-node" style="color: #44B78B;" onclick="inspectNode('Django', 'High-level Python web framework for rapid backend development and ORM management.')"><i class="devicon-django-plain"></i><span class="terminal-tooltip">Django</span></div>
+                                <div class="terminal-node" style="color: #009688;" onclick="inspectNode('FastAPI', 'High-performance asynchronous Python web framework for microservice architectures.')"><i class="devicon-fastapi-plain"></i><span class="terminal-tooltip">FastAPI</span></div>
+                                <div class="terminal-node" style="color: #60A5FA;" onclick="inspectNode('Scrapy', 'Web crawling and data scraping framework for ingestion pipelines.')"><i class="fa-solid fa-spider"></i><span class="terminal-tooltip">Scrapy</span></div>
+                                <div class="terminal-node" style="color: #43B02A;" onclick="inspectNode('Selenium', 'Browser automation tool for dynamic web scraping and end-to-end testing.')"><i class="devicon-selenium-original"></i><span class="terminal-tooltip">Selenium</span></div>
+                            </div>
+                        </div>
+
+                        <div class="station-module mod-cloud">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="telemetry-text">SYS.OP.C3</span>
+                                <div class="telemetry-lights"><span class="t-light cyan"></span><span class="t-light cyan"></span></div>
+                            </div>
+                            <h3 class="module-title">CLOUD / DEVOPS / TOOLS</h3>
+                            <div class="tech-terminals">
+                                <div class="terminal-node" style="color: #FF9900;" onclick="inspectNode('AWS Lambda', 'Serverless compute service for running backend code without managing servers.')">λ<span class="terminal-tooltip">AWS Lambda</span></div>
+                                <div class="terminal-node" style="color: #FF9900;" onclick="inspectNode('API Gateway', 'Managed service for creating, publishing, and securing APIs at scale.')"><i class="fa-solid fa-network-wired"></i><span class="terminal-tooltip">API Gateway</span></div>
+                                <div class="terminal-node" style="color: #4053D6;" onclick="inspectNode('DynamoDB', 'Key-value and document database delivering single-digit millisecond performance.')"><i class="fa-solid fa-server"></i><span class="terminal-tooltip">DynamoDB</span></div>
+                                <div class="terminal-node" style="color: #FF9900;" onclick="inspectNode('S3', 'Object storage service offering industry-leading scalability and data availability.')">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                                    <span class="terminal-tooltip">S3</span>
+                                </div>
+                                <div class="terminal-node" style="color: #FF4F8B;" onclick="inspectNode('EventBridge', 'Serverless event bus for routing application data across AWS services.')"><i class="fa-solid fa-bolt"></i><span class="terminal-tooltip">EventBridge</span></div>
+                                <div class="terminal-node" style="color: #2496ED;" onclick="inspectNode('Docker', 'Containerization platform ensuring consistent execution environments.')"><i class="devicon-docker-plain"></i><span class="terminal-tooltip">Docker</span></div>
+                                <div class="terminal-node" style="color: #ffffff;" onclick="inspectNode('GitHub', 'Version control platform and collaboration hub for code repositories.')"><i class="devicon-github-original"></i><span class="terminal-tooltip">GitHub</span></div>
+                                <div class="terminal-node" style="color: #4E9BCD;" onclick="inspectNode('SonarQube', 'Static code analysis tool for continuous code quality inspection.')"><i class="devicon-sonarqube-plain"></i><span class="terminal-tooltip">SonarQube</span></div>
+                                <div class="terminal-node" style="color: #00e5ff;" onclick="inspectNode('Prophet', 'Forecasting procedure for time-series analytics.')"><i class="fa-solid fa-chart-line"></i><span class="terminal-tooltip">Prophet</span></div>
+                                <div class="terminal-node" style="color: #0A9EDC;" onclick="inspectNode('pytest', 'Testing framework for writing robust and scalable unit tests in Python.')"><i class="devicon-pytest-plain"></i><span class="terminal-tooltip">pytest</span></div>
+                                <div class="terminal-node" style="color: #2088FF;" onclick="inspectNode('CI/CD', 'Automated build and deployment pipelines ensuring rapid iteration cycles.')"><i class="fa-solid fa-infinity"></i><span class="terminal-tooltip">CI/CD practices</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MISSION LOG -->
+        <section id="projects">
+            <h2>MISSION LOG</h2>
+            
+            <!-- Filter Matrix Bar -->
+            <div class="filter-matrix">
+                <button class="filter-btn active" onclick="filterProjects('all')">ALL SYSTEMS</button>
+                <button class="filter-btn" onclick="filterProjects('genai')">GENAI / LLM</button>
+                <button class="filter-btn" onclick="filterProjects('backend')">BACKEND / API</button>
+                <button class="filter-btn" onclick="filterProjects('dl')">DEEP LEARNING</button>
+            </div>
+
+            <div class="project-list">
+                <!-- Project 1 -->
+                <div class="project-row" data-category="genai">
+                    <div class="project-info">
+                        <h3 class="project-title">TRAVEL CONCIERGE</h3>
+                        <ul class="project-description">
+                            <li>Architected a multi-agent travel planner using Google ADK to handle complex trip requests.</li>
+                            <li>Implemented a root agent to decompose user prompts and orchestrate destination, logistics, and budgeting specialists.</li>
+                            <li>Integrated automated tools for live web search, flight mapping, hotel lookups, and currency conversion.</li>
+                            <li>Aggregated specialist outputs into a single conversational workflow to generate complete itineraries.</li>
+                        </ul>
+                        <div class="tag-list">
+                            <span class="tag">PYTHON</span>
+                            <span class="tag">LANGCHAIN</span>
+                            <span class="tag">MULTI-AGENT</span>
+                            <span class="tag">GOOGLE ADK</span>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://github.com/saksham7685/Itnerary-Planner" target="_blank" rel="noopener noreferrer"><click onclick="playAudio()"><i class="fa-brands fa-github"></i></click></a>
+                        </div>
+                    </div>
+                    <div class="project-schema">
+                        <svg viewBox="0 0 120 160" class="flow-svg">
+                            <!-- Brighter Blueprint Grid -->
+                            <path d="M0 20 h120 M0 40 h120 M0 60 h120 M0 80 h120 M0 100 h120 M0 120 h120 M0 140 h120 M20 0 v160 M40 0 v160 M60 0 v160 M80 0 v160 M100 0 v160" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+                            
+                            <!-- User Request -->
+                            <rect x="40" y="10" width="40" height="15" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                            <text x="60" y="20" fill="#ffffff" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">USER REQUEST</text>
+                            
+                            <!-- Root Agent Hexagon -->
+                            <polygon points="60,40 75,48 75,64 60,72 45,64 45,48" fill="none" stroke="#00e5ff" stroke-width="1.5"/>
+                            <text x="60" y="58" fill="#00e5ff" font-family="monospace" font-size="6" text-anchor="middle" font-weight="bold">ROOT</text>
+                            
+                            <!-- Connectors Top -->
+                            <line x1="60" y1="25" x2="60" y2="40" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Connectors to Sub-agents -->
+                            <polyline points="60,72 60,85 25,85 25,100" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <line x1="60" y1="72" x2="60" y2="100" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <polyline points="60,72 60,85 95,85 95,100" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Sub-Agents -->
+                            <rect x="10" y="100" width="30" height="15" rx="2" fill="none" stroke="#f5c542" stroke-width="1.5"/>
+                            <text x="25" y="110" fill="#f5c542" font-family="monospace" font-size="4.5" text-anchor="middle" font-weight="bold">FLIGHTS</text>
+                            
+                            <rect x="45" y="100" width="30" height="15" rx="2" fill="none" stroke="#f5c542" stroke-width="1.5"/>
+                            <text x="60" y="110" fill="#f5c542" font-family="monospace" font-size="4.5" text-anchor="middle" font-weight="bold">HOTELS</text>
+                            
+                            <rect x="80" y="100" width="30" height="15" rx="2" fill="none" stroke="#f5c542" stroke-width="1.5"/>
+                            <text x="95" y="110" fill="#f5c542" font-family="monospace" font-size="4.5" text-anchor="middle" font-weight="bold">BUDGET</text>
+                            
+                            <!-- Connectors Bottom -->
+                            <polyline points="25,115 25,130 60,130" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <line x1="60" y1="115" x2="60" y2="130" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <polyline points="95,115 95,130 60,130" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <line x1="60" y1="130" x2="60" y2="140" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Output -->
+                            <rect x="35" y="140" width="50" height="15" fill="none" stroke="#00e5ff" stroke-width="1.5"/>
+                            <text x="60" y="150" fill="#00e5ff" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">ITINERARY</text>
+
+                            <!-- Animated Pulses -->
+                            <circle r="2.5" fill="#e32929"><animateMotion dur="3s" repeatCount="indefinite" path="M60,25 L60,40 M60,72 L60,85 L25,85 L25,100 M25,115 L25,130 L60,130 L60,140" /></circle>
+                            <circle r="2.5" fill="#e32929"><animateMotion dur="3s" begin="1s" repeatCount="indefinite" path="M60,25 L60,40 M60,72 L60,100 M60,115 L60,140" /></circle>
+                            <circle r="2.5" fill="#e32929"><animateMotion dur="3s" begin="2s" repeatCount="indefinite" path="M60,25 L60,40 M60,72 L60,85 L95,85 L95,100 M95,115 L95,130 L60,130 L60,140" /></circle>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-row" data-category="genai">
+                    <div class="project-info">
+                        <h3 class="project-title">PDFMATE.AI</h3>
+                        <ul class="project-description">
+                            <li>Developed a Django-based RAG application for intelligent PDF question answering.</li>
+                            <li>Configured automated document chunking and generated MPNet embeddings indexed in Pinecone.</li>
+                            <li>Deployed local Ollama Zephyr-7B inference to produce context-grounded responses.</li>
+                            <li>Engineered the system to return precise retrieved evidence snippets alongside generated answers.</li>
+                        </ul>
+                        <div class="tag-list">
+                            <span class="tag">DJANGO</span>
+                            <span class="tag">PINECONE</span>
+                            <span class="tag">OLLAMA</span>
+                            <span class="tag">RAG</span>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://github.com/saksham7685/PDFMate.Ai" target="_blank" rel="noopener noreferrer"><click onclick="playAudio()"><i class="fa-brands fa-github"></i></click></a>
+                        </div>
+                    </div>
+                    <div class="project-schema">
+                        <svg viewBox="0 0 120 160" class="flow-svg">
+                            <!-- Brighter Blueprint Grid -->
+                            <path d="M0 20 h120 M0 40 h120 M0 60 h120 M0 80 h120 M0 100 h120 M0 120 h120 M0 140 h120 M20 0 v160 M40 0 v160 M60 0 v160 M80 0 v160 M100 0 v160" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+                            
+                            <!-- Document Icon -->
+                            <path d="M45,10 h20 l10,10 v20 h-30 z" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                            <path d="M65,10 v10 h10" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                            <text x="60" y="28" fill="#ffffff" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">SOURCE</text>
+                            <text x="60" y="36" fill="#ffffff" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">PDF</text>
+                            
+                            <!-- Connector -->
+                            <line x1="60" y1="40" x2="60" y2="55" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Chunking & Embedding -->
+                            <rect x="25" y="55" width="70" height="20" rx="2" stroke="#f5c542" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="67" fill="#f5c542" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">MiniLMv6 + MPNETBaseV2</text>
+                            
+                            <!-- Connector -->
+                            <line x1="60" y1="75" x2="60" y2="90" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Vector DB Cylinder -->
+                            <ellipse cx="60" cy="95" rx="20" ry="6" stroke="#e32929" fill="none" stroke-width="1.5"/>
+                            <path d="M40,95 v25 a20,6 0 0,0 40,0 v-25" stroke="#e32929" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="112" fill="#e32929" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">PINECONE DB</text>
+                            
+                            <!-- Connector Bidirectional -->
+                            <line x1="55" y1="126" x2="55" y2="140" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <line x1="65" y1="140" x2="65" y2="126" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- LLM Node -->
+                            <rect x="35" y="140" width="50" height="15" rx="2" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="150" fill="#00e5ff" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">LOCAL LLM</text>
+                            
+                            <!-- Animation -->
+                            <circle r="2.5" fill="#00e5ff">
+                                <animateMotion dur="2.5s" repeatCount="indefinite" path="M60,40 L60,55 M60,75 L60,90 M55,126 L55,140" />
+                            </circle>
+                            <circle r="2.5" fill="#f5c542">
+                                <animateMotion dur="2.5s" repeatCount="indefinite" path="M65,140 L65,126" />
+                            </circle>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-row" data-category="genai dl">
+                    <div class="project-info">
+                        <h3 class="project-title">DOCWIZARD</h3>
+                        <ul class="project-description">
+                            <li>Built a fully CPU-optimized document analysis pipeline eliminating GPU inference dependencies.</li>
+                            <li>Implemented font-based hierarchy detection (H1/H2/H3) to structure raw document data.</li>
+                            <li>Applied semantic relevance scoring to enable persona- and task-based content extraction.</li>
+                            <li>Integrated FLAN-T5 summarization to generate concise outputs from targeted document sections.</li>
+                        </ul>
+                        <div class="tag-list">
+                            <span class="tag">PYMUPDF</span>
+                            <span class="tag">FLAN-T5</span>
+                            <span class="tag">CPU-OPTIMIZED</span>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://github.com/saksham7685/DocWizard" target="_blank" rel="noopener noreferrer"><click onclick="playAudio()"><i class="fa-brands fa-github"></i></click></a>
+                        </div>
+                    </div>
+                    <div class="project-schema">
+                        <svg viewBox="0 0 120 160" class="flow-svg">
+                            <!-- Brighter Blueprint Grid -->
+                            <path d="M0 20 h120 M0 40 h120 M0 60 h120 M0 80 h120 M0 100 h120 M0 120 h120 M0 140 h120 M20 0 v160 M40 0 v160 M60 0 v160 M80 0 v160 M100 0 v160" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+                            
+                            <!-- Document Parse Tree Base -->
+                            <rect x="40" y="10" width="40" height="30" stroke="#ffffff" fill="none" stroke-width="1.5"/>
+                            <line x1="45" y1="18" x2="75" y2="18" stroke="#00e5ff" stroke-width="2"/>
+                            <line x1="45" y1="26" x2="65" y2="26" stroke="#f5c542" stroke-width="1.5"/>
+                            <line x1="45" y1="34" x2="70" y2="34" stroke="#ffffff" stroke-width="1"/>
+                            
+                            <!-- Split Paths -->
+                            <polyline points="60,40 60,50 30,65 30,80" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <polyline points="60,40 60,50 90,65 90,80" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <line x1="60" y1="40" x2="60" y2="80" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Content Blocks -->
+                            <rect x="15" y="80" width="30" height="15" stroke="#f5c542" fill="none" stroke-width="1.5"/>
+                            <text x="30" y="89" fill="#f5c542" font-family="monospace" font-size="4" text-anchor="middle">H1 NODE</text>
+                            
+                            <rect x="45" y="80" width="30" height="15" stroke="#f5c542" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="89" fill="#f5c542" font-family="monospace" font-size="4" text-anchor="middle">H2 NODE</text>
+                            
+                            <rect x="75" y="80" width="30" height="15" stroke="#f5c542" fill="none" stroke-width="1.5"/>
+                            <text x="90" y="89" fill="#f5c542" font-family="monospace" font-size="4" text-anchor="middle">H3 NODE</text>
+                            
+                            <!-- Funnel into CPU -->
+                            <polyline points="30,95 30,110 50,115" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <polyline points="90,95 90,110 70,115" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <line x1="60" y1="95" x2="60" y2="115" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- CPU & FLAN-T5 -->
+                            <rect x="40" y="115" width="40" height="15" rx="2" stroke="#e32929" fill="#101a2e" stroke-width="1.5"/>
+                            <text x="60" y="125" fill="#e32929" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">CPU SCORE</text>
+                            
+                            <line x1="60" y1="130" x2="60" y2="140" stroke="#ffffff" stroke-width="1.5"/>
+                            
+                            <rect x="35" y="140" width="50" height="15" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="150" fill="#00e5ff" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">FLAN-T5</text>
+
+                            <!-- Flowing Particles -->
+                            <circle r="2" fill="#00e5ff"><animateMotion dur="2.5s" repeatCount="indefinite" path="M60,40 L60,50 L30,65 L30,80 M30,95 L30,110 L50,115 M60,130 L60,140"/></circle>
+                            <circle r="2" fill="#00e5ff"><animateMotion dur="2.5s" begin="0.8s" repeatCount="indefinite" path="M60,40 L60,80 M60,95 L60,115 M60,130 L60,140"/></circle>
+                            <circle r="2" fill="#00e5ff"><animateMotion dur="2.5s" begin="1.6s" repeatCount="indefinite" path="M60,40 L60,50 L90,65 L90,80 M90,95 L90,110 L70,115 M60,130 L60,140"/></circle>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-row" data-category="backend genai">
+                    <div class="project-info">
+                        <h3 class="project-title">NEURAL NEWS</h3>
+                        <ul class="project-description">
+                            <li>Engineered a personalized news backend using Django REST Framework and MySQL, secured by JWT and Redis OTP.</li>
+                            <li>Developed real-time ingestion pipelines using Scrapy and Selenium for dynamic content retrieval.</li>
+                            <li>Integrated MiniLM and MPNet models for automated credibility scoring and bias detection.</li>
+                            <li>Built a RAG architecture with Pinecone semantic search and local Zephyr-7B inference for conversational summaries.</li>
+                        </ul>
+                        <div class="tag-list">
+                            <span class="tag">DJANGO</span>
+                            <span class="tag">SCRAPY</span>
+                            <span class="tag">PINECONE</span>
+                            <span class="tag">REDIS</span>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://github.com/saksham7685/Neural-News" target="_blank" rel="noopener noreferrer"><click onclick="playAudio()"><i class="fa-brands fa-github"></i></click></a>
+                        </div>
+                    </div>
+                    <div class="project-schema">
+                        <svg viewBox="0 0 120 160" class="flow-svg">
+                            <!-- Brighter Blueprint Grid -->
+                            <path d="M0 20 h120 M0 40 h120 M0 60 h120 M0 80 h120 M0 100 h120 M0 120 h120 M0 140 h120 M20 0 v160 M40 0 v160 M60 0 v160 M80 0 v160 M100 0 v160" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+                            
+                            <!-- Web Node (Scrapy) -->
+                            <circle cx="60" cy="25" r="15" stroke="#ffffff" fill="none" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <circle cx="60" cy="25" r="8" stroke="#ffffff" fill="none" stroke-width="1"/>
+                            <text x="60" y="48" fill="#ffffff" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">SCRAPY WEB</text>
+                            
+                            <line x1="60" y1="52" x2="60" y2="65" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Filtering Funnel (Bias) -->
+                            <polygon points="35,65 85,65 70,90 50,90" stroke="#e32929" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="76" fill="#e32929" font-family="monospace" font-size="4.5" text-anchor="middle" font-weight="bold">BIAS</text>
+                            <text x="60" y="84" fill="#e32929" font-family="monospace" font-size="4.5" text-anchor="middle" font-weight="bold">FILTER</text>
+                            
+                            <!-- Split Paths -->
+                            <polyline points="60,90 60,105 35,105 35,120" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <polyline points="60,90 60,105 85,105 85,120" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Databases -->
+                            <rect x="20" y="120" width="30" height="25" rx="2" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
+                            <text x="35" y="134" fill="#00e5ff" font-family="monospace" font-size="4.5" text-anchor="middle" font-weight="bold">MySQL</text>
+                            
+                            <ellipse cx="85" cy="125" rx="15" ry="5" stroke="#f5c542" fill="none" stroke-width="1.5"/>
+                            <path d="M70,125 v15 a15,5 0 0,0 30,0 v-15" stroke="#f5c542" fill="none" stroke-width="1.5"/>
+                            <text x="85" y="138" fill="#f5c542" font-family="monospace" font-size="4" text-anchor="middle" font-weight="bold">PINECONE</text>
+                            
+                            <!-- Flowing Data Dot -->
+                            <circle r="2.5" fill="#f5c542">
+                                <animateMotion dur="2.5s" repeatCount="indefinite" path="M60,40 L60,65 M60,90 L60,105 L35,105 L35,120" />
+                            </circle>
+                            <circle r="2.5" fill="#00e5ff">
+                                <animateMotion dur="2.5s" begin="1.25s" repeatCount="indefinite" path="M60,40 L60,65 M60,90 L60,105 L85,105 L85,120" />
+                            </circle>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="project-row" data-category="backend">
+                    <div class="project-info">
+                        <h3 class="project-title">TRADEOPTIMIZE AI</h3>
+                        <ul class="project-description">
+                            <li>Constructed an import-operations control tower utilizing Next.js and a FastAPI backend.</li>
+                            <li>Decomposed the architecture into specialized microservices handling routing and compliance.</li>
+                            <li>Implemented HS product classification and automated landed-cost modeling workflows.</li>
+                            <li>Integrated FX settlement forecasting alongside route optimization and cargo tracking analytics.</li>
+                        </ul>
+                        <div class="tag-list">
+                            <span class="tag">FASTAPI</span>
+                            <span class="tag">PROPHET</span>
+                            <span class="tag">MONGODB</span>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://github.com/SIDDHARTH1-1CHAUHAN/Trade_Optimiser" target="_blank" rel="noopener noreferrer"><click onclick="playAudio()"><i class="fa-brands fa-github"></i></click></a>
+                        </div>
+                    </div>
+                    <div class="project-schema">
+                        <svg viewBox="0 0 120 160" class="flow-svg">
+                            <!-- Brighter Blueprint Grid -->
+                            <path d="M0 20 h120 M0 40 h120 M0 60 h120 M0 80 h120 M0 100 h120 M0 120 h120 M0 140 h120 M20 0 v160 M40 0 v160 M60 0 v160 M80 0 v160 M100 0 v160" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+                            
+                            <!-- API Gateway -->
+                            <rect x="35" y="10" width="50" height="15" rx="3" stroke="#ffffff" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="20" fill="#ffffff" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">FASTAPI GATEWAY</text>
+                            
+                            <!-- Connectors -->
+                            <polyline points="60,25 60,40 25,40 25,55" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <line x1="60" y1="25" x2="60" y2="55" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <polyline points="60,25 60,40 95,40 95,55" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Microservices Architecture Blocks -->
+                            <rect x="10" y="55" width="30" height="18" rx="2" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
+                            <text x="25" y="66" fill="#00e5ff" font-family="monospace" font-size="4" text-anchor="middle" font-weight="bold">ROUTING</text>
+                            
+                            <rect x="45" y="55" width="30" height="18" rx="2" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="66" fill="#00e5ff" font-family="monospace" font-size="4" text-anchor="middle" font-weight="bold">HS CLASS</text>
+                            
+                            <rect x="80" y="55" width="30" height="18" rx="2" stroke="#f5c542" fill="none" stroke-width="1.5"/>
+                            <text x="95" y="66" fill="#f5c542" font-family="monospace" font-size="4" text-anchor="middle" font-weight="bold">PROPHET</text>
+                            
+                            <!-- Connectors Down -->
+                            <polyline points="25,73 25,95 60,95" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <line x1="60" y1="73" x2="60" y2="110" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            <polyline points="95,73 95,95 60,95" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Database Tower -->
+                            <ellipse cx="60" cy="115" rx="25" ry="7" stroke="#e32929" fill="none" stroke-width="1.5"/>
+                            <path d="M35,115 v25 a25,7 0 0,0 50,0 v-25" stroke="#e32929" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="132" fill="#e32929" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">MONGODB</text>
+                            
+                            <!-- Data Flow Dots -->
+                            <circle r="2.5" fill="#00e5ff">
+                                <animateMotion dur="2.5s" repeatCount="indefinite" path="M60,25 L60,40 L25,40 L25,55 M25,73 L25,95 L60,95 L60,110"/>
+                            </circle>
+                            <circle r="2.5" fill="#f5c542">
+                                <animateMotion dur="2.5s" begin="1.25s" repeatCount="indefinite" path="M60,25 L60,40 L95,40 L95,55 M95,73 L95,95 L60,95 L60,110"/>
+                            </circle>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="project-row" data-category="dl">
+                    <div class="project-info">
+                        <h3 class="project-title">DEEP LEARNING IMAGE CAPTIONING</h3>
+                        <ul class="project-description">
+                            <li>Developed a deep learning image-to-text generation pipeline.</li>
+                            <li>Utilized ResNet-152 for highly accurate visual feature extraction.</li>
+                            <li>Implemented an LSTM sequence decoder coupled with an attention mechanism.</li>
+                            <li>Enabled dynamic focusing on relevant image regions to generate natural-language captions.</li>
+                        </ul>
+                        <div class="tag-list">
+                            <span class="tag">PYTORCH</span>
+                            <span class="tag">RESNET-152</span>
+                            <span class="tag">LSTM</span>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://github.com/saksham7685/Image-captioning" target="_blank" rel="noopener noreferrer"><click onclick="playAudio()"><i class="fa-brands fa-github"></i></click></a>
+                        </div>
+                    </div>
+                    <div class="project-schema">
+                        <svg viewBox="0 0 120 160" class="flow-svg">
+                            <!-- Brighter Blueprint Grid -->
+                            <path d="M0 20 h120 M0 40 h120 M0 60 h120 M0 80 h120 M0 100 h120 M0 120 h120 M0 140 h120 M20 0 v160 M40 0 v160 M60 0 v160 M80 0 v160 M100 0 v160" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+                            
+                            <!-- Source Image Node -->
+                            <rect x="45" y="10" width="30" height="20" stroke="#ffffff" fill="none" stroke-width="1.5"/>
+                            <circle cx="60" cy="20" r="4" stroke="#ffffff" fill="none" stroke-width="1"/>
+                            <polyline points="45,30 52,24 58,29 62,26 75,30" stroke="#ffffff" fill="none" stroke-width="1.5"/>
+                            <text x="25" y="22" fill="#ffffff" font-family="monospace" font-size="4" text-anchor="middle">IMAGE</text>
+                            
+                            <line x1="60" y1="30" x2="60" y2="45" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- CNN Feature Extractor (ResNet) -->
+                            <rect x="35" y="45" width="50" height="10" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
+                            <rect x="40" y="60" width="40" height="10" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
+                            <rect x="45" y="75" width="30" height="10" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
+                            <text x="80" y="66" fill="#00e5ff" font-family="monospace" font-size="4" text-anchor="start">RESNET-152</text>
+                            
+                            <line x1="60" y1="85" x2="60" y2="100" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- LSTM Sequence Decoder -->
+                            <rect x="35" y="100" width="50" height="20" rx="4" stroke="#f5c542" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="112" fill="#f5c542" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">LSTMs</text>
+                            
+                            <!-- Recurrent Loop Arrow -->
+                            <path d="M85,110 a8,8 0 1,1 0,12" fill="none" stroke="#f5c542" stroke-width="1.5"/>
+                            <polygon points="85,122 89,119 89,125" fill="#f5c542"/>
+                            
+                            <line x1="60" y1="120" x2="60" y2="135" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                            
+                            <!-- Output Text -->
+                            <rect x="30" y="135" width="60" height="15" stroke="#ffffff" fill="none" stroke-width="1.5"/>
+                            <text x="60" y="145" fill="#ffffff" font-family="monospace" font-size="5" text-anchor="middle" font-weight="bold">TEXT CAPTION</text>
+                            
+                            <!-- Moving Red Pulse -->
+                            <circle r="2.5" fill="#e32929">
+                                <animateMotion dur="3s" repeatCount="indefinite" path="M60,30 L60,45 M60,85 L60,100 M60,120 L60,135"/>
+                            </circle>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ENGINEERING PROTOCOLS (Moved right after Mission Log) -->
+        <section id="philosophy" class="standard-section">
+            <h2>ENGINEERING PROTOCOLS</h2>
+            
+            <div class="circuit-wrapper">
+                <div class="circuit-bg-fx"></div>
+                
+                <div class="circuit-svg-container">
+                    <svg class="circuit-lines" viewBox="0 0 900 350" preserveAspectRatio="xMidYMid meet">
+                        <path d="M 180 80 L 720 80 C 880 80, 880 270, 720 270 L 180 270" fill="none" stroke="var(--panel-gray)" stroke-width="4" stroke-linejoin="round" />
+                        <path d="M 180 80 L 720 80 C 880 80, 880 270, 720 270 L 180 270" fill="none" stroke="var(--text-white)" stroke-width="2" stroke-linejoin="round" stroke-dasharray="8 8" opacity="0.6" />
+                        
+                        <path d="M 180 270 C 20 270, 20 80, 180 80" fill="none" stroke="var(--panel-gray)" stroke-width="4" />
+                        <path d="M 180 270 C 20 270, 20 80, 180 80" fill="none" stroke="var(--accent-yellow)" stroke-width="2" stroke-dasharray="6 6" />
+
+                        <polygon points="310,75 320,80 310,85" fill="var(--text-white)" />
+                        <polygon points="580,75 590,80 580,85" fill="var(--text-white)" />
+                        <polygon points="835,165 845,165 840,175" fill="var(--text-white)" />
+                        <polygon points="590,265 580,270 590,275" fill="var(--text-white)" />
+                        <polygon points="320,265 310,270 320,275" fill="var(--text-white)" />
+                        <polygon points="55,182 60,172 65,182" fill="var(--accent-yellow)" />
+
+                        <circle r="4" fill="var(--accent-red)"><animateMotion dur="4s" repeatCount="indefinite" path="M 180 80 L 720 80 C 880 80, 880 270, 720 270 L 180 270" /></circle>
+                    </svg>
+
+                    <div class="c-node active" id="node-1" style="top: 22.85%; left: 20%;" onmouseenter="activateNode(1); playAudio();">
+                        <div class="n-num">01</div><div class="n-text">UNDERSTAND</div>
+                    </div>
+                    <div class="c-node" id="node-2" style="top: 22.85%; left: 50%;" onmouseenter="activateNode(2); playAudio();">
+                        <div class="n-num">02</div><div class="n-text">DECOMPOSE</div>
+                    </div>
+                    <div class="c-node" id="node-3" style="top: 22.85%; left: 80%;" onmouseenter="activateNode(3); playAudio();">
+                        <div class="n-num">03</div><div class="n-text">CHOOSE</div>
+                    </div>
+                    <div class="c-node" id="node-4" style="top: 77.14%; left: 80%;" onmouseenter="activateNode(4); playAudio();">
+                        <div class="n-num">04</div><div class="n-text">BUILD</div>
+                    </div>
+                    <div class="c-node" id="node-5" style="top: 77.14%; left: 50%;" onmouseenter="activateNode(5); playAudio();">
+                        <div class="n-num">05</div><div class="n-text">BREAK</div>
+                    </div>
+                    <div class="c-node" id="node-6" style="top: 77.14%; left: 20%;" onmouseenter="activateNode(6); playAudio();">
+                        <div class="n-num">06</div><div class="n-text">MEASURE</div>
+                    </div>
+
+                    <div class="c-console">
+                        <div class="c-console-header">
+                            <span class="c-dot red"></span><span class="c-dot yellow"></span><span class="c-dot green"></span>
+                            <span class="c-console-lbl">SYS.LOGIC // TELEMETRY</span>
+                        </div>
+                        <h3 id="c-display-title">01 UNDERSTAND</h3>
+                        <p id="c-display-desc">Define the actual problem.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACADEMIC TRAJECTORY -->
+        <section id="education" class="timeline-section">
+            <h2>ACADEMIC TRAJECTORY</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3 style="font-family: var(--font-heading);">PUNJAB ENGINEERING COLLEGE</h3>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem; color: var(--accent-red);">B.Tech in Electronics & Communication Engineering | 2022 - 2026</p>
+                    <p>Core focus on distributed backend systems, AI applications, and algorithmic efficiency. 97.67 percentile in JEE Mains 2022.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="font-family: var(--font-heading);">MAJOR R.N. KAPOOR DAV CENTENNIAL SCHOOL</h3>
+                    <p style="font-weight: bold; margin-bottom: 0.3rem; color: var(--bg-navy);">Class X (CBSE): 97.4%</p>
+                    <p style="font-weight: bold; margin-bottom: 0; color: var(--bg-navy);">Class XII (CBSE): 95.6%</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FLIGHT LOG -->
+        <section id="experience" class="timeline-section">
+            <h2>FLIGHT LOG</h2>
+            <div class="timeline">
+                <div class="timeline-item" style="border-color: var(--accent-yellow);">
+                    <h3 style="font-family: var(--font-heading);">AI INTERN</h3>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem; color: var(--accent-red);">XLScout | Aug 2026 - Present</p>
+                    <p>Developing applied AI solutions for patent claim analysis, infringement analysis, and novelty assessment. Optimizing agentic harnesses bridging LLM capabilities with structured workflows.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="font-family: var(--font-heading);">SOFTWARE ENGINEER</h3>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem; color: var(--bg-navy);">Madgical Techdom | Jun 2026 - Aug 2026</p>
+                    <p>Built systems for a port-based logistics portal covering import, export, shipping, and delivery workflows.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="font-family: var(--font-heading);">SWE INTERN</h3>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem; color: var(--bg-navy);">Madgical Techdom | Jan 2025 - Jun 2025</p>
+                    <p>Architected scalable REST APIs using Django, AWS (API Gateway, DynamoDB, Lambda), and MongoDB. Enhanced reliability through CI/CD and pytest.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="leadership" class="standard-section">
+            <h2>COMMAND CENTER</h2>
+            <div class="project-list" style="flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 2rem;">
+                <div class="project-row" style="flex-direction: column; max-width: 400px; padding: 2rem; border-color: var(--accent-yellow);">
+                    <h3 class="project-title">IEEE STUDENT BRANCH CHAIRPERSON</h3>
+                    <p class="project-description" style="margin-bottom: 0; padding-bottom: 1rem; color: var(--bg-navy);">Directing technical hackathons (Techadroit, Technovation), leading ML workshops, and mentoring engineers. (Jul 2025 - Present)</p>
+                    <div class="tag-list">
+                        <span class="tag">LEADERSHIP</span>
+                        <span class="tag">TECHNICAL MENTORSHIP</span>
+                    </div>
+                </div>
+                <div class="project-row" style="flex-direction: column; max-width: 400px; padding: 2rem; border-color: var(--accent-yellow);">
+                    <h3 class="project-title">PECFEST MARKETING JOINT HEAD</h3>
+                    <p class="project-description" style="margin-bottom: 0; padding-bottom: 1rem; color: var(--bg-navy);">Negotiated brand sponsorships securing 4% of the festival budget and scaled outreach footprint by 15%. (Jul 2024 - Nov 2024)</p>
+                    <div class="tag-list">
+                        <span class="tag">OUTREACH</span>
+                        <span class="tag">OPERATIONS</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements" class="standard-section">
+            <h2>GALACTIC MILESTONES</h2>
+            <div class="milestone-list">
+                <div class="milestone-item">
+                    <i class="fa-solid fa-award" style="font-size: 1.5rem; color: var(--accent-red);"></i>
+                    <span>97.4 Percentile in JEE Main 2022 and All India Rank 11,354 in JEE Advanced 2022.</span>
+                </div>
+                <div class="milestone-item">
+                    <i class="fa-solid fa-file-contract" style="font-size: 1.5rem; color: var(--accent-yellow);"></i>
+                    <span>Design Patent Granted (444235-001) - Basic Electronics Learning Kit specifically architected for the visually impaired.</span>
+                </div>
+                <div class="milestone-item">
+                    <i class="fa-solid fa-microscope" style="font-size: 1.5rem; color: var(--accent-red);"></i>
+                    <span>Computational Research at CMME (Summer 2025) - Integrated multi-omics high-dimensional datasets for cancer detection models.</span>
+                </div>
+                <div class="milestone-item">
+                    <i class="fa-solid fa-code" style="font-size: 1.5rem; color: var(--accent-yellow);"></i>
+                    <span>Adobe India Hackathon - Qualified for Round 2 in the national competitive hackathon.</span>
+                </div>
+                <div class="milestone-item">
+                    <i class="fa-brands fa-microsoft" style="font-size: 1.5rem; color: var(--accent-red);"></i>
+                    <span>Top 10 Teams - Microsoft Learn Student Chapter Hackathon at TIET (Feb 2026).</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECURE COMMS LINK (Quirky Channels without Secure Channel form) -->
+        <footer id="comms">
+            <h2>SECURE COMMS LINK</h2>
+            <div class="comms-container">
+                <div class="contact-grid">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=Saksham3204@gmail.com" target="_blank" rel="noopener noreferrer" class="comm-channel gmail" onclick="playAudio()">
+                        <div class="channel-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="channel-details">
+                            <span class="channel-label">GMAIL_UPLINK</span>
+                            <span class="channel-value">Saksham3204@gmail.com</span>
+                        </div>
+                    </a>
+                    
+                    <a href="https://linkedin.com/in/saksham-gupta-b68601288" class="comm-channel linkedin" target="_blank" rel="noopener noreferrer" onclick="playAudio()">
+                        <div class="channel-icon"><i class="fa-brands fa-linkedin-in"></i></div>
+                        <div class="channel-details">
+                            <span class="channel-label">LINKEDIN_NET</span>
+                            <span class="channel-value">saksham-gupta</span>
+                        </div>
+                    </a>
+                    
+                    <a href="https://github.com/saksham7685" class="comm-channel github" target="_blank" rel="noopener noreferrer" onclick="playAudio()">
+                        <div class="channel-icon"><i class="fa-brands fa-github"></i></div>
+                        <div class="channel-details">
+                            <span class="channel-label">GITHUB_REPO</span>
+                            <span class="channel-value">saksham7685</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        /* --- Web Audio API Synth Beeps --- */
+        let audioEnabled = true;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playAudio() {
+            if (!audioEnabled) return;
+            try {
+                initAudio();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5 note
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } catch(e) {}
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const btn = document.getElementById('audio-toggle-btn');
+            btn.innerText = audioEnabled ? "🔊 Audio" : "🔇 Muted";
+            playAudio();
+        }
+
+        /* --- CLI Terminal Logic --- */
+        function toggleCLI() {
+            playAudio();
+            const modal = document.getElementById('cli-modal');
+            modal.classList.toggle('active');
+            if (modal.classList.contains('active')) {
+                document.getElementById('cli-input').focus();
+            }
+        }
+
+        function handleCLI(event) {
+            if (event.key === 'Enter') {
+                playAudio();
+                const input = document.getElementById('cli-input');
+                const val = input.value.trim().toLowerCase();
+                const output = document.getElementById('cli-output');
+                
+                const cmdLine = document.createElement('div');
+                cmdLine.innerHTML = `<span style="color:var(--accent-cyan);">></span> ${input.value}`;
+                output.appendChild(cmdLine);
+
+                const resLine = document.createElement('div');
+                resLine.style.color = 'var(--panel-gray)';
+
+                if (val === 'help') {
+                    resLine.innerText = "Available commands: help, skills, projects, stats, resume, clear";
+                } else if (val === 'skills') {
+                    resLine.innerText = "Core Stack: Python, C++, Django, FastAPI, PyTorch, Pinecone, LangChain, AWS Lambda, Docker.";
+                } else if (val === 'projects') {
+                    resLine.innerText = "Missions: Travel Concierge, PDFMate.Ai, DocWizard, Neural News, TradeOptimize AI, Image Captioning.";
+                } else if (val === 'stats') {
+                    resLine.innerText = "Telemetry: Systems nominal. Uptime 99.98%. CPU Load 14.2%. Active deployment: Orbital Node #4.";
+                } else if (val === 'resume') {
+                    resLine.innerText = "Opening Flight Plan manifest...";
+                    toggleResumeModal();
+                } else if (val === 'clear') {
+                    output.innerHTML = '';
+                    input.value = '';
+                    return;
+                } else {
+                    resLine.innerText = `Command not recognized: '${val}'. Type 'help' for instructions.`;
+                    resLine.style.color = 'var(--accent-red)';
+                }
+
+                output.appendChild(resLine);
+                input.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === '`' || e.key === '~') {
+                e.preventDefault();
+                toggleCLI();
+            }
+        });
+
+        /* --- Tech Node Inspector Modal --- */
+        function inspectNode(title, desc) {
+            playAudio();
+            document.getElementById('node-modal-title').innerText = title;
+            document.getElementById('node-modal-desc').innerText = desc;
+            document.getElementById('node-modal').classList.add('active');
+        }
+
+        function closeNodeModal() {
+            playAudio();
+            document.getElementById('node-modal').classList.remove('active');
+        }
+
+        /* --- Resume Modal --- */
+        function toggleResumeModal() {
+            playAudio();
+            document.getElementById('resume-modal').classList.toggle('active');
+        }
+
+        /* --- CRT Toggle --- */
+        function toggleCRT() {
+            playAudio();
+            document.body.classList.toggle('crt-active');
+        }
+
+        /* --- Mission Filters --- */
+        function filterProjects(cat) {
+            playAudio();
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.project-row').forEach(row => {
+                if (cat === 'all' || row.dataset.category.includes(cat)) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        }
+
+        /* --- Scroll Reveal Observer --- */
+        document.addEventListener('DOMContentLoaded', () => {
+            const elementsToReveal = document.querySelectorAll('section, footer, .about-terminal');
+            elementsToReveal.forEach(el => el.classList.add('reveal-hidden'));
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-visible');
+                    } else {
+                        entry.target.classList.remove('reveal-visible');
+                    }
+                });
+            }, {
+                threshold: 0, 
+                rootMargin: "-50px 0px -50px 0px" 
+            });
+
+            elementsToReveal.forEach(el => revealObserver.observe(el));
+        });
+
+        const cursor = document.getElementById('cursor');
+        const mouse = { x: -1000, y: -1000 };
+
+        if(window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+        }
+
+        function scrollToProjects() {
+            document.getElementById('projects').scrollIntoView();
+        }
+
+        /* --- Canvas Background Physics & Constellations --- */
+        const canvas = document.getElementById('space-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const shapes = [];
+        const numShapes = 45;
+
+        class Shape {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 8 + 4; 
+                this.color = Math.random() < 0.7 ? '#ffffff' : '#e32929'; 
+                this.speedX = (Math.random() - 0.5) * 0.4; 
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+                this.type = Math.random() < 0.5 ? 'cube' : 'sphere';
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 0.45; 
+
+                if (this.type === 'cube') {
+                    ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.size / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            }
+
+            update() {
+                // Mouse physics gravity / repulsion
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    const angle = Math.atan2(dy, dx);
+                    this.x -= Math.cos(angle) * 0.6;
+                    this.y -= Math.sin(angle) * 0.6;
+                }
+
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.rotation += this.rotationSpeed;
+
+                if (this.x > canvas.width + this.size) this.x = -this.size;
+                if (this.x < -this.size) this.x = canvas.width + this.size;
+                if (this.y > canvas.height + this.size) this.y = -this.size;
+                if (this.y < -this.size) this.y = canvas.height + this.size;
+            }
+        }
+
+        function initShapes() {
+            for (let i = 0; i < numShapes; i++) {
+                shapes.push(new Shape());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw constellation lines between particles and mouse if close
+            for (let i = 0; i < shapes.length; i++) {
+                shapes[i].update();
+                shapes[i].draw();
+
+                const mDist = Math.hypot(shapes[i].x - mouse.x, shapes[i].y - mouse.y);
+                if (mDist < 120) {
+                    ctx.strokeStyle = 'rgba(0, 229, 255, ' + (1 - mDist / 120) * 0.4 + ')';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(shapes[i].x, shapes[i].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.onload = function() {
+            initShapes();
+            animate();
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            shapes.length = 0; 
+            initShapes(); 
+        });
+
+        /* --- Typewriter Effect Logic --- */
+        const twText = "THE ENGINEER BEHIND THE CONSOLE";
+        const twElement = document.getElementById('tw-text');
+        let twIndex = 0;
+        let typingStarted = false;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function typeWriter() {
+            if (twIndex < twText.length) {
+                twElement.innerHTML += twText.charAt(twIndex);
+                twIndex++;
+                setTimeout(typeWriter, Math.random() * 50 + 40);
+            }
+        }
+
+        const typeWriterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !typingStarted) {
+                    typingStarted = true;
+                    if (prefersReducedMotion) {
+                        twElement.innerHTML = twText;
+                    } else {
+                        setTimeout(typeWriter, 400);
+                    }
+                }
+            });
+        }, { threshold: 0.2 });
+
+        const aboutTerminal = document.getElementById('about-terminal');
+        if (aboutTerminal) {
+            typeWriterObserver.observe(aboutTerminal);
+        }
+
+        /* --- Systems Circuit Telemetry --- */
+        const circuitData = {
+            1: { title: "01 UNDERSTAND", desc: "Define the actual problem before writing code." },
+            2: { title: "02 DECOMPOSE", desc: "Break messy workflows into smaller modular services." },
+            3: { title: "03 CHOOSE", desc: "Select precise tech stacks tailored for scalability." },
+            4: { title: "04 BUILD", desc: "Develop clean, well-architected pipelines & APIs." },
+            5: { title: "05 BREAK", desc: "Stress test and debug edge cases thoroughly." },
+            6: { title: "06 MEASURE", desc: "Monitor telemetry, latency, and system performance." }
+        };
+
+        function activateNode(id) {
+            document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
+            const node = document.getElementById(`node-${id}`);
+            if(node) node.classList.add('active');
+            
+            const titleEl = document.getElementById('c-display-title');
+            const descEl = document.getElementById('c-display-desc');
+            if(titleEl && descEl && circuitData[id]) {
+                titleEl.style.opacity = '0';
+                descEl.style.opacity = '0';
+                setTimeout(() => {
+                    titleEl.innerText = circuitData[id].title;
+                    descEl.innerText = circuitData[id].desc;
+                    titleEl.style.opacity = '1';
+                    descEl.style.opacity = '1';
+                }, 150);
+            }
+        }
+    </script>
+</body>
+</html>
