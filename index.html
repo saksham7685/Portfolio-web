@@ -829,16 +829,24 @@
             transform: scale(1.2);
         }
 
-        /* --- Interactive Systems Circuit --- */
+        /* --- Engineering Protocols: Vertical Stack — Site-Aligned + Rocket Spine --- */
         .circuit-wrapper {
             position: relative;
             max-width: 1000px;
             width: 100%;
             margin: 0 auto;
             background-color: var(--bg-navy);
+            background-image: radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px);
+            background-size: 14px 14px;
             border: var(--border-width) solid var(--text-white);
             border-radius: 4px;
             overflow: hidden;
+            padding: 0.4rem 0;
+        }
+        .circuit-wrapper::before {
+            content: ''; position: absolute; inset: 5px;
+            border: 1px dashed rgba(255,255,255,0.13);
+            border-radius: 3px; pointer-events: none; z-index: 1;
         }
         .circuit-bg-fx {
             position: absolute; inset: 0;
@@ -848,96 +856,189 @@
             z-index: 0; pointer-events: none;
         }
         @keyframes warp-speed { 0% { background-position: 200% 0; } 100% { background-position: 0% 0; } }
+        /* header accent like typewriter-container border-bottom */
+        #philosophy h2 { position: relative; padding-bottom: 0.7rem; }
+        #philosophy h2::after {
+            content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 84px; height: 3px; background: var(--accent-red);
+            box-shadow: 0 0 8px rgba(227,41,41,0.5);
+        }
+        #philosophy .proto-hint {
+            font-family: var(--font-main); font-size: 0.72rem; letter-spacing: 1.2px; text-transform: uppercase;
+            color: var(--panel-gray); opacity: 0.78; text-align: center;
+            margin: -1.2rem 0 1.4rem 0; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        #philosophy .proto-hint::before, #philosophy .proto-hint::after {
+            content: ''; height: 1px; width: 28px; background: rgba(255,255,255,0.22);
+        }
 
-        .circuit-svg-container {
+        .protocol-stage {
             position: relative;
+            max-width: 860px;
             width: 100%;
-            aspect-ratio: 900 / 350;
             margin: 0 auto;
+            display: flex;
+            padding: 1.4rem 1.2rem 1.4rem 0;
             z-index: 2;
         }
-        .circuit-lines {
-            width: 100%; height: 100%;
+        .protocol-spine-svg {
+            position: absolute;
+            left: 22px;
+            top: 0;
+            bottom: 0;
+            width: 28px;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
             display: block;
         }
-        
-        .c-node {
-            position: absolute;
-            transform: translate(-50%, -50%);
-            display: flex;
-            align-items: center;
-            background-color: var(--bg-navy);
-            border: var(--border-width) solid var(--panel-gray);
-            padding: 5px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-            white-space: nowrap;
-            z-index: 10;
-        }
-        .c-node::before {
-            content: ''; position: absolute; top:-4px; left:-4px; width: 8px; height: 8px;
-            border-top: var(--border-width) solid var(--accent-red); border-left: var(--border-width) solid var(--accent-red);
-            opacity: 0; transition: opacity 0.2s;
-        }
-        .c-node::after {
-            content: ''; position: absolute; bottom:-4px; right:-4px; width: 8px; height: 8px;
-            border-bottom: var(--border-width) solid var(--accent-red); border-right: var(--border-width) solid var(--accent-red);
-            opacity: 0; transition: opacity 0.2s;
-        }
-        .c-node:hover, .c-node.active {
-            border-color: var(--accent-red);
-            background-color: var(--text-white);
-            transform: translate(-50%, -8px);
-            z-index: 20;
-        }
-        .c-node:hover::before, .c-node:hover::after, .c-node.active::before, .c-node.active::after { opacity: 1; }
-        
-        .n-num {
-            background-color: var(--panel-gray); color: var(--bg-navy);
-            font-weight: bold; padding: 4px 8px; font-family: var(--font-main);
-            transition: all 0.2s;
-        }
-        .c-node:hover .n-num, .c-node.active .n-num {
-            background-color: var(--accent-red); color: var(--text-white);
-        }
-        .n-text {
-            color: var(--text-white); font-family: var(--font-heading); font-size: 0.95rem; font-weight: bold; padding: 0 12px; letter-spacing: 1px;
-            transition: all 0.2s;
-        }
-        .c-node:hover .n-text, .c-node.active .n-text {
-            color: var(--bg-navy);
-        }
+        .spine-base { fill: none; stroke: #1a2744; stroke-width: 2.5; stroke-linecap: round; }
+        .spine-glow { fill: none; stroke: var(--panel-gray); stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 8 7; opacity: 0.14; transition: opacity 0.3s; }
+        .spine-glow.active { opacity: 0.55; }
+        .spine-elbow-base { fill: none; stroke: #1a2744; stroke-width: 1.8; stroke-linecap: round; }
+        .spine-elbow-glow { fill: none; stroke: var(--panel-gray); stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 8 7; opacity: 0; transition: opacity 0.3s; }
+        .protocol-card.active ~ svg .spine-elbow-glow,
+        .protocol-card:hover ~ svg .spine-elbow-glow { opacity: 0.55; }
 
-        .c-console {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 235px;
-            background-color: var(--bg-navy);
-            border: var(--border-width) solid var(--text-white);
-            border-top: 4px solid var(--accent-red);
-            padding: 0.8rem;
-            text-align: center;
-            z-index: 5;
+        .protocol-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            margin-left: 52px;
+            position: relative;
+            z-index: 2;
         }
-        .c-console-header {
-            display: flex; align-items: center; gap: 5px; margin-bottom: 0.5rem; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 5px;
+        .protocol-card {
+            background: rgba(16, 26, 46, 0.92);
+            border: 1px solid #1f2e4d;
+            border-top: 2px solid #233454;
+            border-left: 2px solid #233454;
+            border-radius: 4px;
+            position: relative;
+            padding: 1.05rem 1.15rem 0.95rem 1.15rem;
+            box-shadow: 4px 4px 12px rgba(0,0,0,0.45), inset 0 0 0 rgba(0,0,0,0);
+            cursor: pointer;
+            transition: all 0.22s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
+            outline: none;
         }
-        .c-dot { width: 6px; height: 6px; border-radius: 50%; }
-        .c-console-lbl { margin-left: auto; font-size: 0.65rem; color: var(--panel-gray); font-family: var(--font-main); letter-spacing: 1px; font-weight: bold; white-space: nowrap; }
-        
-        #c-display-title {
-            color: var(--accent-red); font-size: 0.95rem; margin-bottom: 0.3rem; transition: opacity 0.15s ease; letter-spacing: 1px;
+        .protocol-card::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.035), transparent);
+            transform: skewX(-20deg); pointer-events: none; transition: left 0.6s ease;
         }
-        #c-display-desc {
-            font-size: 0.75rem; color: var(--text-white); line-height: 1.4; transition: opacity 0.15s ease; min-height: 35px;
+        .protocol-card:hover::after { left: 200%; }
+        .protocol-card:hover, .protocol-card:focus-visible {
+            border-color: var(--panel-gray);
+            box-shadow: 4px 6px 14px rgba(0,0,0,0.5);
+            transform: translateY(-1px) translateX(2px);
+        }
+        .protocol-card.active {
+            border-color: var(--panel-gray);
+            box-shadow: 6px 8px 16px rgba(0,0,0,0.55);
+            transform: translateY(-1px) translateX(3px);
+        }
+        .protocol-card .module-frame-tl,
+        .protocol-card .module-frame-br {
+            position: absolute; width: 13px; height: 13px; opacity: 0.38; transition: all 0.25s;
+        }
+        .protocol-card .module-frame-tl { top: -1px; left: -1px; border-top: 2px solid var(--panel-gray); border-left: 2px solid var(--panel-gray); }
+        .protocol-card .module-frame-br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--panel-gray); border-right: 2px solid var(--panel-gray); }
+        .protocol-card:hover .module-frame-tl, .protocol-card:hover .module-frame-br,
+        .protocol-card.active .module-frame-tl, .protocol-card.active .module-frame-br,
+        .protocol-card:focus-visible .module-frame-tl, .protocol-card:focus-visible .module-frame-br { opacity: 0.85; }
+
+        .protocol-card .module-telemetry { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.14); padding-bottom: 6px; margin-bottom: 10px; }
+        .proto-telemetry-text { font-size: 0.62rem; color: #6b82a8; letter-spacing: 1px; text-transform: uppercase; }
+        .proto-status { font-size: 0.62rem; color: #6b82a8; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .proto-status .t-light { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .protocol-card.active .proto-status { color: var(--panel-gray); }
+        /* per-card left accent — muted milestone language, no cyan */
+        .protocol-card[data-id="1"] { border-left-color: #233454; }
+        .protocol-card[data-id="1"].active { border-left-color: var(--accent-red); }
+        .protocol-card[data-id="2"].active { border-left-color: var(--accent-yellow); }
+        .protocol-card[data-id="3"].active { border-left-color: var(--panel-gray); }
+        .protocol-card[data-id="4"].active { border-left-color: var(--accent-yellow); }
+        .protocol-card[data-id="5"].active { border-left-color: var(--accent-red); }
+        .protocol-card[data-id="6"].active { border-left-color: var(--panel-gray); }
+
+        .protocol-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.35rem; }
+        .proto-num {
+            width: 30px; height: 30px; min-width: 30px;
+            background: var(--panel-gray); color: var(--bg-navy);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-main); font-weight: 800; font-size: 0.78rem;
+            border-radius: 50%; border: 2px solid rgba(255,255,255,0.0);
+            transition: all 0.25s;
+        }
+        .protocol-card:hover .proto-num, .protocol-card.active .proto-num, .protocol-card:focus-visible .proto-num {
+            background: var(--accent-red); color: var(--text-white); border-color: var(--text-white);
+            box-shadow: 0 0 10px rgba(227,41,41,0.45); transform: scale(1.05);
+        }
+        .proto-icon {
+            width: 28px; height: 28px; min-width: 28px;
+            background: #080c16; border: 1px solid #1f2e4d; border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.95rem; color: #5c7499;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.7);
+            transition: all 0.22s;
+        }
+        .protocol-card:hover .proto-icon, .protocol-card.active .proto-icon { color: var(--text-white); border-color: var(--panel-gray); }
+        .proto-title {
+            font-family: var(--font-heading); font-size: 0.92rem; font-weight: 700;
+            color: var(--text-white); letter-spacing: 1.2px; text-transform: uppercase; line-height: 1;
+        }
+        .proto-desc { font-family: var(--font-main); font-size: 0.80rem; line-height: 1.55; color: var(--panel-gray); margin-left: 42px; }
+        .proto-detail {
+            font-family: var(--font-main); font-size: 0.74rem; line-height: 1.5; color: rgba(209,213,219,0.88);
+            margin-left: 42px; max-height: 0; opacity: 0; overflow: hidden;
+            transition: max-height 0.32s ease, opacity 0.22s ease, margin-top 0.22s ease;
+            border-left: 2px solid rgba(255,255,255,0.14); padding-left: 8px;
+        }
+        .protocol-card.active .proto-detail { max-height: 80px; opacity: 1; margin-top: 8px; }
+
+        .spine-dot { display: none; } /* replaced by proto-rocket */
+        /* solid rocket — no square, no neon, matte — nose down first, true vertical */
+        .proto-rocket {
+            position: absolute; left: 22px; top: 24px;
+            width: auto; height: auto;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; border-radius: 0;
+            color: var(--text-white);
+            font-size: 40px; line-height: 1;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.65));
+            transform: translate(-50%, -50%) rotate(180deg);
+            z-index: 4; pointer-events: none;
+            opacity: 0.96;
+            transition: top 0.55s cubic-bezier(0.25,0.8,0.25,1), transform 0.35s cubic-bezier(0.68,-0.55,0.265,1.55);
+        }
+        .proto-rocket i { display: block; }
+        /* autonomous shuttle — down-first: top→bottom nose down (180deg), flip at bottom dwell, up→top nose up (0deg) */
+        .proto-rocket.auto {
+            animation: rocket-shuttle 11s ease-in-out infinite;
+        }
+        .proto-rocket.paused { animation: none; }
+        @keyframes rocket-shuttle {
+            0%   { top: 24px; transform: translate(-50%, -50%) rotate(180deg); }
+            38%  { top: 696px; transform: translate(-50%, -50%) rotate(180deg); }
+            50%  { top: 696px; transform: translate(-50%, -50%) rotate(0deg); }
+            88%  { top: 24px; transform: translate(-50%, -50%) rotate(0deg); }
+            100% { top: 24px; transform: translate(-50%, -50%) rotate(180deg); }
         }
 
         @media (max-width: 900px) {
-            .circuit-svg-container { width: 100%; height: auto; }
-            .c-node { transform: translate(-50%, -50%) scale(0.85); }
-            .c-node:hover, .c-node.active { transform: translate(-50%, -50%) scale(0.9); }
-            .c-console { transform: translate(-50%, -50%) scale(0.85); }
+            .protocol-stage { padding: 1rem 0.9rem 1rem 0; }
+            .protocol-spine-svg { left: 14px; }
+            .proto-rocket { left: 14px; width: 44px; height: 44px; font-size: 80px; }
+            .protocol-stack { margin-left: 36px; gap: 0.9rem; }
+            .proto-desc, .proto-detail { margin-left: 0; }
+            .protocol-head { flex-wrap: wrap; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .circuit-bg-fx { animation: none; }
+            .protocol-card { transition: none; }
+            .proto-rocket.auto { animation: none; }
         }
 
         /* --- Dynamic Marquee --- */
@@ -1325,7 +1426,7 @@
             <h3 style="color: var(--accent-yellow); margin-bottom: 0.5rem; font-size: 1.3rem;">ENGINEER'S LOG</h3>
             <p style="font-size: 0.85rem; color: var(--panel-gray); line-height: 1.6; margin-bottom: 1.5rem;">Saksham Gupta — Backend & Applied AI Engineer. B.Tech ECE (Punjab Engineering College, 2026).</p>
             <div style="display: flex; gap: 1rem; justify-content: center;">
-                <a href="https://drive.google.com/file/d/1qwdllfQSyIxOaS5qjM9g30e2eXrT98cG/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" class="cta-btn" style="padding: 0.6rem 1.2rem; font-size: 0.8rem; background: var(--accent-yellow); color: var(--bg-navy);">DECRYPT RESUME</a>
+                <a href="https://drive.google.com/file/d/14PEvRYdUYbolQ2rAamLv_qtMj0RVMiqW/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="cta-btn" style="padding: 0.6rem 1.2rem; font-size: 0.8rem; background: var(--accent-yellow); color: var(--bg-navy);">DECRYPT RESUME</a>
                 <button class="cta-btn" style="padding: 0.6rem 1.2rem; font-size: 0.8rem;" onclick="toggleResumeModal()">CLOSE MANIFEST</button>
             </div>
         </div>
@@ -1905,7 +2006,7 @@
                             <rect x="35" y="45" width="50" height="10" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
                             <rect x="40" y="60" width="40" height="10" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
                             <rect x="45" y="75" width="30" height="10" stroke="#00e5ff" fill="none" stroke-width="1.5"/>
-                            <text x="80" y="66" fill="#00e5ff" font-family="monospace" font-size="4" text-anchor="start">RESNET-152</text>
+                            <text x="48" y="66" fill="#00e5ff" font-family="monospace" font-size="4" text-anchor="start">RESNET-152</text>
                             
                             <line x1="60" y1="85" x2="60" y2="100" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
                             
@@ -1933,57 +2034,111 @@
             </div>
         </section>
 
-        <!-- ENGINEERING PROTOCOLS (Moved right after Mission Log) -->
+        <!-- ENGINEERING PROTOCOLS — Vertical Protocol Stack (Option A) — site-aligned -->
         <section id="philosophy" class="standard-section">
             <h2>ENGINEERING PROTOCOLS</h2>
-            
+            <p class="proto-hint">Six-stage execution loop — hover or use arrow keys to step through</p>
             <div class="circuit-wrapper">
                 <div class="circuit-bg-fx"></div>
-                
-                <div class="circuit-svg-container">
-                    <svg class="circuit-lines" viewBox="0 0 900 350" preserveAspectRatio="xMidYMid meet">
-                        <path d="M 180 80 L 720 80 C 880 80, 880 270, 720 270 L 180 270" fill="none" stroke="var(--panel-gray)" stroke-width="4" stroke-linejoin="round" />
-                        <path d="M 180 80 L 720 80 C 880 80, 880 270, 720 270 L 180 270" fill="none" stroke="var(--text-white)" stroke-width="2" stroke-linejoin="round" stroke-dasharray="8 8" opacity="0.6" />
-                        
-                        <path d="M 180 270 C 20 270, 20 80, 180 80" fill="none" stroke="var(--panel-gray)" stroke-width="4" />
-                        <path d="M 180 270 C 20 270, 20 80, 180 80" fill="none" stroke="var(--accent-yellow)" stroke-width="2" stroke-dasharray="6 6" />
-
-                        <polygon points="310,75 320,80 310,85" fill="var(--text-white)" />
-                        <polygon points="580,75 590,80 580,85" fill="var(--text-white)" />
-                        <polygon points="835,165 845,165 840,175" fill="var(--text-white)" />
-                        <polygon points="590,265 580,270 590,275" fill="var(--text-white)" />
-                        <polygon points="320,265 310,270 320,275" fill="var(--text-white)" />
-                        <polygon points="55,182 60,172 65,182" fill="var(--accent-yellow)" />
-
-                        <circle r="4" fill="var(--accent-red)"><animateMotion dur="4s" repeatCount="indefinite" path="M 180 80 L 720 80 C 880 80, 880 270, 720 270 L 180 270" /></circle>
+                <div class="protocol-stage" role="tablist" aria-label="Engineering protocols">
+                    <svg class="protocol-spine-svg" viewBox="0 0 28 720" preserveAspectRatio="none" aria-hidden="true">
+                        <line class="spine-base" x1="14" y1="16" x2="14" y2="704"></line>
+                        <line class="spine-glow active" id="spine-glow" x1="14" y1="16" x2="14" y2="704"></line>
+                        <!-- elbows: base + glow pairs per protocol -->
+                        <line class="spine-elbow-base" x1="14" y1="48" x2="26" y2="48"></line><line class="spine-elbow-glow" id="elbow-glow-1" x1="14" y1="48" x2="26" y2="48"></line>
+                        <line class="spine-elbow-base" x1="14" y1="172" x2="26" y2="172"></line><line class="spine-elbow-glow" id="elbow-glow-2" x1="14" y1="172" x2="26" y2="172"></line>
+                        <line class="spine-elbow-base" x1="14" y1="296" x2="26" y2="296"></line><line class="spine-elbow-glow" id="elbow-glow-3" x1="14" y1="296" x2="26" y2="296"></line>
+                        <line class="spine-elbow-base" x1="14" y1="420" x2="26" y2="420"></line><line class="spine-elbow-glow" id="elbow-glow-4" x1="14" y1="420" x2="26" y2="420"></line>
+                        <line class="spine-elbow-base" x1="14" y1="544" x2="26" y2="544"></line><line class="spine-elbow-glow" id="elbow-glow-5" x1="14" y1="544" x2="26" y2="544"></line>
+                        <line class="spine-elbow-base" x1="14" y1="668" x2="26" y2="668"></line><line class="spine-elbow-glow" id="elbow-glow-6" x1="14" y1="668" x2="26" y2="668"></line>
                     </svg>
-
-                    <div class="c-node active" id="node-1" style="top: 22.85%; left: 20%;" onmouseenter="activateNode(1); playAudio();">
-                        <div class="n-num">01</div><div class="n-text">UNDERSTAND</div>
-                    </div>
-                    <div class="c-node" id="node-2" style="top: 22.85%; left: 50%;" onmouseenter="activateNode(2); playAudio();">
-                        <div class="n-num">02</div><div class="n-text">DECOMPOSE</div>
-                    </div>
-                    <div class="c-node" id="node-3" style="top: 22.85%; left: 80%;" onmouseenter="activateNode(3); playAudio();">
-                        <div class="n-num">03</div><div class="n-text">CHOOSE</div>
-                    </div>
-                    <div class="c-node" id="node-4" style="top: 77.14%; left: 80%;" onmouseenter="activateNode(4); playAudio();">
-                        <div class="n-num">04</div><div class="n-text">BUILD</div>
-                    </div>
-                    <div class="c-node" id="node-5" style="top: 77.14%; left: 50%;" onmouseenter="activateNode(5); playAudio();">
-                        <div class="n-num">05</div><div class="n-text">BREAK</div>
-                    </div>
-                    <div class="c-node" id="node-6" style="top: 77.14%; left: 20%;" onmouseenter="activateNode(6); playAudio();">
-                        <div class="n-num">06</div><div class="n-text">MEASURE</div>
-                    </div>
-
-                    <div class="c-console">
-                        <div class="c-console-header">
-                            <span class="c-dot red"></span><span class="c-dot yellow"></span><span class="c-dot green"></span>
-                            <span class="c-console-lbl">SYS.LOGIC // TELEMETRY</span>
+                    <div class="proto-rocket auto" id="proto-rocket" aria-hidden="true"><i class="ph-fill ph-rocket"></i></div>
+                    <div class="spine-dot visible" id="proto-spine-dot" aria-hidden="true" style="display:none"></div>
+                    <div class="protocol-stack">
+                        <div class="protocol-card active" id="proto-1" role="tab" tabindex="0" aria-selected="true" data-id="1" onmouseenter="setActiveProtocol(1); playAudio();" onclick="setActiveProtocol(1,true); playAudio();" onfocus="setActiveProtocol(1)">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="proto-telemetry-text">PROTO_01 // INIT</span>
+                                <span class="proto-status"><span class="t-light cyan"></span> NOMINAL</span>
+                            </div>
+                            <div class="protocol-head">
+                                <div class="proto-num">01</div>
+                                <div class="proto-icon"><i class="ph ph-magnifying-glass"></i></div>
+                                <h3 class="proto-title">UNDERSTAND</h3>
+                            </div>
+                            <p class="proto-desc">Define the actual problem before writing code.</p>
+                            <p class="proto-detail">Map users, constraints & failure modes — never code blind. Discovery &gt; assumptions.</p>
                         </div>
-                        <h3 id="c-display-title">01 UNDERSTAND</h3>
-                        <p id="c-display-desc">Define the actual problem.</p>
+                        <div class="protocol-card" id="proto-2" role="tab" tabindex="0" aria-selected="false" data-id="2" onmouseenter="setActiveProtocol(2); playAudio();" onclick="setActiveProtocol(2,true); playAudio();" onfocus="setActiveProtocol(2)">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="proto-telemetry-text">PROTO_02 // CORE</span>
+                                <span class="proto-status"><span class="t-light cyan"></span><span class="t-light red"></span> ACTIVE</span>
+                            </div>
+                            <div class="protocol-head">
+                                <div class="proto-num">02</div>
+                                <div class="proto-icon"><i class="ph ph-tree-structure"></i></div>
+                                <h3 class="proto-title">DECOMPOSE</h3>
+                            </div>
+                            <p class="proto-desc">Break messy workflows into smaller modular services.</p>
+                            <p class="proto-detail">Slice into bounded contexts with clear interfaces — make complexity composable.</p>
+                        </div>
+                        <div class="protocol-card" id="proto-3" role="tab" tabindex="0" aria-selected="false" data-id="3" onmouseenter="setActiveProtocol(3); playAudio();" onclick="setActiveProtocol(3,true); playAudio();" onfocus="setActiveProtocol(3)">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="proto-telemetry-text">PROTO_03 // SELECT</span>
+                                <span class="proto-status"><span class="t-light cyan"></span> STANDBY</span>
+                            </div>
+                            <div class="protocol-head">
+                                <div class="proto-num">03</div>
+                                <div class="proto-icon"><i class="ph ph-stack"></i></div>
+                                <h3 class="proto-title">CHOOSE</h3>
+                            </div>
+                            <p class="proto-desc">Select precise tech stacks tailored for scalability.</p>
+                            <p class="proto-detail">Right tool for latency, cost & team velocity — no hype-driven architecture.</p>
+                        </div>
+                        <div class="protocol-card" id="proto-4" role="tab" tabindex="0" aria-selected="false" data-id="4" onmouseenter="setActiveProtocol(4); playAudio();" onclick="setActiveProtocol(4,true); playAudio();" onfocus="setActiveProtocol(4)">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="proto-telemetry-text">PROTO_04 // FABRICATE</span>
+                                <span class="proto-status"><span class="t-light cyan"></span><span class="t-light red"></span> BUILDING</span>
+                            </div>
+                            <div class="protocol-head">
+                                <div class="proto-num">04</div>
+                                <div class="proto-icon"><i class="ph ph-hammer"></i></div>
+                                <h3 class="proto-title">BUILD</h3>
+                            </div>
+                            <p class="proto-desc">Develop clean, well-architected pipelines &amp; APIs.</p>
+                            <p class="proto-detail">Typed, tested, documented — ship small, ship often.</p>
+                        </div>
+                        <div class="protocol-card" id="proto-5" role="tab" tabindex="0" aria-selected="false" data-id="5" onmouseenter="setActiveProtocol(5); playAudio();" onclick="setActiveProtocol(5,true); playAudio();" onfocus="setActiveProtocol(5)">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="proto-telemetry-text">PROTO_05 // STRESS</span>
+                                <span class="proto-status"><span class="t-light red"></span> VERIFY</span>
+                            </div>
+                            <div class="protocol-head">
+                                <div class="proto-num">05</div>
+                                <div class="proto-icon"><i class="ph ph-bug"></i></div>
+                                <h3 class="proto-title">BREAK</h3>
+                            </div>
+                            <p class="proto-desc">Stress test and debug edge cases thoroughly.</p>
+                            <p class="proto-detail">Chaos, fuzz & real data — find it before users do.</p>
+                        </div>
+                        <div class="protocol-card" id="proto-6" role="tab" tabindex="0" aria-selected="false" data-id="6" onmouseenter="setActiveProtocol(6); playAudio();" onclick="setActiveProtocol(6,true); playAudio();" onfocus="setActiveProtocol(6)">
+                            <div class="module-frame-tl"></div><div class="module-frame-br"></div>
+                            <div class="module-telemetry">
+                                <span class="proto-telemetry-text">PROTO_06 // TELEMETRY</span>
+                                <span class="proto-status"><span class="t-light cyan"></span> MONITOR</span>
+                            </div>
+                            <div class="protocol-head">
+                                <div class="proto-num">06</div>
+                                <div class="proto-icon"><i class="ph ph-chart-line-up"></i></div>
+                                <h3 class="proto-title">MEASURE</h3>
+                            </div>
+                            <p class="proto-desc">Monitor telemetry, latency, and system performance.</p>
+                            <p class="proto-detail">Log, trace, alert — optimize with data, not guesses.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2071,7 +2226,7 @@
                 </div>
                 <div class="milestone-item">
                     <i class="fa-brands fa-microsoft" style="font-size: 1.5rem; color: var(--accent-red);"></i>
-                    <span>Top 10 Teams - Microsoft Learn Student Chapter Hackathon at TIET (Feb 2026).</span>
+                    <span>Top 10 Teams - Microsoft Learn Student Chapter MAKEATHON-8 at TIET (Feb 2026).</span>
                 </div>
             </div>
         </section>
@@ -2423,8 +2578,8 @@
             typeWriterObserver.observe(aboutTerminal);
         }
 
-        /* --- Systems Circuit Telemetry --- */
-        const circuitData = {
+        /* --- Engineering Protocols: Vertical Stack Logic --- */
+        const protocolData = {
             1: { title: "01 UNDERSTAND", desc: "Define the actual problem before writing code." },
             2: { title: "02 DECOMPOSE", desc: "Break messy workflows into smaller modular services." },
             3: { title: "03 CHOOSE", desc: "Select precise tech stacks tailored for scalability." },
@@ -2432,25 +2587,113 @@
             5: { title: "05 BREAK", desc: "Stress test and debug edge cases thoroughly." },
             6: { title: "06 MEASURE", desc: "Monitor telemetry, latency, and system performance." }
         };
+        // Backward compat alias
+        const circuitData = protocolData;
+        function activateNode(id) { setActiveProtocol(id, true); }
 
-        function activateNode(id) {
-            document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
-            const node = document.getElementById(`node-${id}`);
-            if(node) node.classList.add('active');
-            
-            const titleEl = document.getElementById('c-display-title');
-            const descEl = document.getElementById('c-display-desc');
-            if(titleEl && descEl && circuitData[id]) {
-                titleEl.style.opacity = '0';
-                descEl.style.opacity = '0';
-                setTimeout(() => {
-                    titleEl.innerText = circuitData[id].title;
-                    descEl.innerText = circuitData[id].desc;
-                    titleEl.style.opacity = '1';
-                    descEl.style.opacity = '1';
-                }, 150);
+        let protoLocked = false;
+        let activeProtoId = 1;
+        let prevProtoId = 1;
+        let shuttleDir = 'down'; // extreme-only: holds 'down' (90deg) until hitting 6, then 'up' (-90deg) until hitting 1
+        let rocketResumeTimer = null;
+        let rocketTopFn = null;
+
+        function setActiveProtocol(id, lock=false) {
+            const target = document.getElementById(`proto-${id}`);
+            if (!target) return;
+            if (lock) protoLocked = true;
+            // extreme-only direction: toggle only when hitting ends
+            if (id === 6) shuttleDir = 'up';
+            else if (id === 1) shuttleDir = 'down';
+            const down = shuttleDir === 'down';
+            prevProtoId = activeProtoId;
+            activeProtoId = id;
+            document.querySelectorAll('.protocol-card').forEach(c => {
+                const isActive = parseInt(c.dataset.id) === id;
+                c.classList.toggle('active', isActive);
+                c.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                if (isActive) c.setAttribute('tabindex','0'); else c.setAttribute('tabindex','0');
+            });
+            // elbow glow — muted panel-gray, no neon
+            for (let i=1; i<=6; i++) {
+                const el = document.getElementById(`elbow-glow-${i}`);
+                if (el) el.style.opacity = (i === id) ? '0.55' : '0';
+            }
+            // rocket + legacy dot position — align to card vertical center within stage
+            const stage = document.querySelector('.protocol-stage');
+            const dot = document.getElementById('proto-spine-dot');
+            const rocket = document.getElementById('proto-rocket');
+            if (stage) {
+                const stageRect = stage.getBoundingClientRect();
+                const cardRect = target.getBoundingClientRect();
+                const top = (cardRect.top - stageRect.top) + cardRect.height/2;
+                if (rocket) {
+                    // pause autonomous shuttle and snap to card with rotation indicating direction
+                    rocket.classList.remove('auto');
+                    rocket.classList.add('paused');
+                    // offset rocket slightly for visual centering
+                    rocket.style.top = top + 'px';
+                    // 0deg = nose up (going up), 180deg = nose down (going down) — true vertical
+                    const rot = down ? '180deg' : '0deg';
+                    rocket.style.transform = `translate(-50%, -50%) rotate(${rot})`;
+                    clearTimeout(rocketResumeTimer);
+                    // resume never-ending loop after idle if motion allowed
+                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        rocketResumeTimer = setTimeout(()=>{
+                            rocket.classList.remove('paused');
+                            rocket.classList.add('auto');
+                            rocket.style.removeProperty('top');
+                            rocket.style.transform = '';
+                        }, 6000);
+                    }
+                }
+                if (dot) {
+                    dot.style.top = top + 'px';
+                    dot.classList.add('visible');
+                }
             }
         }
+
+        // Keyboard navigation on tablist/cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const stage = document.querySelector('.protocol-stage');
+            if (!stage) return;
+            stage.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    const next = activeProtoId < 6 ? activeProtoId + 1 : 1;
+                    setActiveProtocol(next, true); document.getElementById(`proto-${next}`)?.focus(); playAudio();
+                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const prev = activeProtoId > 1 ? activeProtoId - 1 : 6;
+                    setActiveProtocol(prev, true); document.getElementById(`proto-${prev}`)?.focus(); playAudio();
+                } else if (e.key === 'Home') { e.preventDefault(); setActiveProtocol(1,true); document.getElementById('proto-1')?.focus(); }
+                else if (e.key === 'End') { e.preventDefault(); setActiveProtocol(6,true); document.getElementById('proto-6')?.focus(); }
+            });
+            // Init positions after layout — also kick rocket auto loop after first paint
+            setTimeout(()=> { setActiveProtocol(1); const r=document.getElementById('proto-rocket'); if(r && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){ setTimeout(()=>{ r.classList.remove('paused'); r.classList.add('auto'); r.style.removeProperty('top'); r.style.transform=''; }, 1200); } }, 250);
+            // keep rocket aligned on resize when paused
+            window.addEventListener('resize', ()=> { const r=document.getElementById('proto-rocket'); if(r && r.classList.contains('paused')) setActiveProtocol(activeProtoId); });
+
+            // Auto-follow on scroll when not locked — IntersectionObserver
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                const cards = document.querySelectorAll('.protocol-card');
+                const io = new IntersectionObserver((entries)=>{
+                    if (protoLocked) return;
+                    // pick most visible
+                    let best=null, bestRatio=0;
+                    entries.forEach(en=>{ if(en.intersectionRatio > bestRatio){ bestRatio=en.intersectionRatio; best=en.target; }});
+                    if(best && bestRatio > 0.4){
+                        const id = parseInt(best.dataset.id);
+                        if(id !== activeProtoId) setActiveProtocol(id);
+                    }
+                }, { threshold: [0.4, 0.6], rootMargin: "-10% 0px -10% 0px" });
+                cards.forEach(c=> io.observe(c));
+                // clicking outside unlocks after 6s idle
+                let unlockTimer;
+                document.querySelectorAll('.protocol-card').forEach(c=> c.addEventListener('click', ()=>{ clearTimeout(unlockTimer); unlockTimer=setTimeout(()=> protoLocked=false, 6000); }));
+            }
+        });
     </script>
 </body>
 </html>
