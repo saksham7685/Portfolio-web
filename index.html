@@ -44,7 +44,7 @@
         /* --- CRT Scanline Overlay --- */
         #crt-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0; left: 0; width: 100%; height: 100vh;
             pointer-events: none;
             z-index: 9998;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
@@ -1388,6 +1388,406 @@
            .project-schema { width: 100%; border-left: none; border-top: var(--border-width) solid var(--bg-navy); padding: 1.5rem; }
            .flow-svg { max-width: 100%; }
         }
+
+        /* ============================================================
+           MOBILE RESPONSIVE ADDITIONS — desktop preserved verbatim
+           All rules additive inside media queries / feature queries
+           ============================================================ */
+
+        /* Global overflow & viewport safeguards */
+        #crt-overlay { width: 100%; }
+        img, svg { max-width: 100%; height: auto; }
+        /* Fluid headings — desktop 2.5rem preserved, mobile scales */
+        #tech h2, #projects h2, .timeline-section h2, .standard-section h2, footer h2 {
+            font-size: clamp(1.75rem, 6vw, 2.5rem);
+        }
+
+        /* Custom cursor — hide on touch/coarse pointer */
+        @media (pointer: coarse) {
+            #cursor { display: none !important; }
+        }
+
+        /* Hover-driven effects only on hover-capable devices */
+        @media (hover: none) {
+            .station-grid:has(.station-module:hover) .station-module:not(:hover) { opacity: 1; filter: none; }
+            .terminal-node:hover .terminal-tooltip { opacity: 0; }
+            .station-module:has(.terminal-node:hover), .station-module:hover { transform: none; }
+        }
+
+        /* Hamburger — hidden on desktop */
+        .nav-hamburger {
+            display: none;
+            background: #080c16;
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            width: 44px; height: 44px;
+            align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .nav-hamburger:focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: 2px; }
+        .nav-brand-row { display: flex; align-items: center; gap: 0.6rem; width: auto; justify-content: space-between; }
+        @media (min-width: 769px) {
+            .nav-brand-row { width: auto; }
+        }
+        @media (max-width: 768px) {
+            .nav-brand-row { width: 100%; }
+        }
+
+        /* Tablet & Mobile nav — hamburger replaces column stacking */
+        @media (max-width: 768px) {
+            .tech-nav {
+                padding: 0.6rem 1rem;
+                flex-direction: column;
+                gap: 0;
+                align-items: stretch;
+                background-color: rgba(16, 26, 46, 0.97);
+            }
+            .nav-brand-row .nav-tools { flex-wrap: wrap; gap: 0.35rem; }
+            .nav-hamburger { display: flex; }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                width: 100%;
+                margin-top: 0.6rem;
+                border-top: 1px solid rgba(255,255,255,0.12);
+                padding-top: 0.6rem;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transition: max-height 0.3s ease, opacity 0.2s ease;
+            }
+            .tech-nav.nav-open .nav-links {
+                display: flex;
+                max-height: 420px;
+                opacity: 1;
+            }
+            .nav-links li { width: 100%; }
+            .nav-item {
+                display: block;
+                width: 100%;
+                text-align: left;
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
+                min-height: 44px;
+                border: 1px solid transparent;
+            }
+            .nav-tool-btn { min-height: 36px; font-size: 0.7rem; padding: 0.35rem 0.6rem; }
+            html { scroll-padding-top: 72px; }
+        }
+
+        /* Hero fluid typography & spacing */
+        @media (max-width: 768px) {
+            #hero { padding: 6rem 1rem 2.5rem 1rem; min-height: auto; }
+            #hero h1 { font-size: clamp(2rem, 10vw, 3rem); line-height: 1; overflow-wrap: anywhere; }
+            #hero .subtitle { font-size: clamp(0.9rem, 3.5vw, 1.2rem); padding: 0 0.5rem; }
+            #hero .subtitle[style] { font-size: clamp(0.9rem, 3.5vw, 1rem) !important; }
+            .cta-btn { min-height: 44px; padding: 0.9rem 1.5rem; font-size: clamp(0.85rem, 3vw, 1rem); }
+            .filter-btn { min-height: 44px; padding: 0.6rem 1rem; }
+        }
+        @media (max-width: 600px) {
+            .about-terminal { padding: 1.5rem 1.1rem; margin: 2rem auto 0 auto; max-width: 92vw; }
+            .typewriter-container { font-size: clamp(0.95rem, 4vw, 1.35rem); min-height: 40px; }
+            .about-content p { font-size: 0.92rem; line-height: 1.65; }
+        }
+        @media (max-width: 360px) {
+            .about-terminal { padding: 1.2rem 0.9rem; }
+        }
+
+        /* Systems Bay — touch targets & spacing */
+        @media (max-width: 950px) {
+            #tech { padding: 3rem 1rem 4rem 1rem; min-height: auto; }
+            .station-grid { gap: 1.2rem; }
+            .station-module { padding: 1.2rem; }
+            .tech-terminals { gap: 10px; }
+            .terminal-node { width: 46px; height: 46px; font-size: 1.35rem; }
+            .orbital-hub { width: 190px; height: 190px; }
+        }
+        @media (max-width: 480px) {
+            .station-wrapper { overflow: visible; }
+            .station-col { gap: 1rem; }
+            .orbital-hub { width: 170px; height: 170px; }
+            .hub-text { font-size: 0.85rem; }
+            .module-title { font-size: 0.8rem; }
+        }
+
+        /* Projects */
+        @media (max-width: 768px) {
+            #projects { padding: 3rem 1rem; }
+            .filter-matrix { gap: 0.5rem; margin-bottom: 2rem; }
+            .project-list { gap: 1.5rem; }
+            .project-info { padding: 1.4rem; }
+            .project-title { font-size: clamp(1.15rem, 5vw, 1.5rem); }
+            .project-description { font-size: 0.8rem; }
+        }
+        @media (max-width: 480px) {
+            .project-info { padding: 1.2rem; }
+            .tag { font-size: 0.68rem; padding: 0.25rem 0.6rem; }
+        }
+
+        /* Protocols spine & rocket — prevent overflow on small screens */
+        @media (max-width: 600px) {
+            .circuit-wrapper { border-radius: 3px; }
+            .protocol-stage { padding: 0.9rem 0.7rem 0.9rem 0; }
+            .protocol-stack { margin-left: 32px; gap: 0.8rem; }
+            .protocol-spine-svg { left: 12px; }
+            .proto-rocket { left: 12px; font-size: 32px; }
+            .protocol-card { padding: 0.9rem 0.95rem 0.8rem 0.95rem; }
+            .proto-title { font-size: clamp(0.82rem, 3.5vw, 0.92rem); }
+            .proto-desc { font-size: 0.78rem; }
+            .proto-detail { font-size: 0.72rem; }
+        }
+        @media (max-width: 768px) and (min-width: 601px) {
+            .proto-rocket { font-size: 36px; }
+        }
+
+        /* Timeline */
+        @media (max-width: 480px) {
+            .timeline-section { padding: 3rem 1rem; }
+            .timeline { margin-left: 0.5rem; padding-left: 1.2rem; gap: 1.2rem; }
+            .timeline-item { padding: 1.2rem; }
+            .timeline-item::before { left: -1.95rem; width: 0.9rem; height: 0.9rem; top: 1.3rem; }
+            .timeline-item h3 { font-size: 1rem; }
+        }
+
+        /* Leadership — force column on mobile */
+        @media (max-width: 768px) {
+            #leadership .project-list { flex-direction: column !important; align-items: center; gap: 1.5rem; }
+            #leadership .project-row { max-width: 92vw !important; width: 100%; padding: 1.4rem !important; }
+        }
+
+        /* Milestones */
+        @media (max-width: 480px) {
+            .milestone-list { gap: 1rem; }
+            .milestone-item { padding: 1.1rem 1rem; gap: 1rem; font-size: 0.88rem; align-items: flex-start; }
+            .milestone-item i { margin-top: 2px; flex-shrink: 0; }
+        }
+
+        /* Comms — prevent overflow on 320px */
+        @media (max-width: 480px) {
+            footer { padding: 3rem 1rem; }
+            .contact-grid { gap: 1rem; }
+            .comm-channel { width: 100%; max-width: 92vw; }
+            .channel-value { max-width: none; white-space: normal; overflow: visible; text-overflow: clip; font-size: 0.85rem; word-break: break-all; }
+        }
+
+        /* Modals — safe viewport sizing */
+        @media (max-width: 480px) {
+            .cli-box, .node-box, .resume-box { width: 94%; padding: 1.2rem; max-height: 92vh; overflow-y: auto; }
+            .cli-body { height: 50vh; max-height: 320px; }
+        }
+
+        /* Marquee — reduce size on small screens */
+        @media (max-width: 480px) {
+            .marquee-container { font-size: 0.9rem; padding: 0.6rem 0; }
+        }
+
+        /* Reduce motion — extend to marquee & warp */
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-content { animation: none; }
+            .circuit-bg-fx { animation: none; }
+            .hub-ring-outer, .hub-ring-inner { animation: none; }
+        }
+
+        /* Prevent horizontal overflow from fixed canvas */
+        #space-canvas { width: 100%; }
+
+        /* ============================================================
+           COMPACT MOBILE SCALE — ~35% smaller on phones
+           Overrides prior mobile block; desktop (>768px) untouched
+           ============================================================ */
+        @media (max-width: 768px) {
+            /* Section rhythm — shave ~35% vertical padding */
+            #tech { padding: 2rem 0.7rem 2.4rem 0.7rem; min-height: auto; }
+            #tech h2 { margin-bottom: 1.6rem; }
+            #projects { padding: 1.8rem 0.7rem; }
+            #projects h2 { margin-bottom: 1rem; }
+            .timeline-section { padding: 1.8rem 0.7rem; }
+            .timeline-section h2 { margin-bottom: 1.2rem; }
+            .standard-section { padding: 1.8rem 0.7rem; }
+            .standard-section h2 { margin-bottom: 1.2rem; }
+            footer { padding: 1.8rem 0.7rem; }
+            footer h2 { margin-bottom: 1.2rem; }
+
+            /* Headings — compact clamp */
+            #tech h2, #projects h2, .timeline-section h2, .standard-section h2, footer h2 {
+                font-size: clamp(1.25rem, 5vw, 1.65rem) !important;
+                letter-spacing: 0.5px;
+            }
+            #philosophy h2 { padding-bottom: 0.5rem; }
+            #philosophy h2::after { width: 56px; height: 2px; }
+            #philosophy .proto-hint { font-size: 0.6rem; margin: -0.6rem 0 0.8rem 0; gap: 6px; }
+            #philosophy .proto-hint::before, #philosophy .proto-hint::after { width: 18px; }
+
+            /* Hero — tighter */
+            #hero { padding: 3.8rem 0.7rem 1rem 0.7rem; }
+            #hero h1 { font-size: clamp(1.45rem, 7vw, 1.9rem) !important; margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+            #hero .subtitle { font-size: clamp(0.72rem, 2.8vw, 0.85rem) !important; margin-bottom: 0.6rem; max-width: 92vw; }
+            #hero .subtitle[style] { font-size: clamp(0.72rem, 2.8vw, 0.82rem) !important; margin-top: 0.4rem !important; }
+            .cta-btn { padding: 0.55rem 0.9rem !important; font-size: 0.72rem !important; min-height: 32px; margin-top: 0.6rem; }
+            .about-terminal { padding: 0.85rem 0.85rem !important; margin: 1rem auto 0 auto !important; max-width: 94vw; }
+            .typewriter-container { font-size: clamp(0.82rem, 3.2vw, 0.98rem) !important; min-height: 32px !important; margin-bottom: 0.8rem !important; padding-bottom: 0.6rem !important; }
+            .about-content p { font-size: 0.72rem !important; line-height: 1.5 !important; margin-bottom: 0.6rem !important; }
+
+            /* Nav — compact */
+            .tech-nav { padding: 0.4rem 0.65rem !important; }
+            .nav-hamburger { width: 32px !important; height: 32px !important; font-size: 1rem !important; }
+            .nav-tool-btn { padding: 0.22rem 0.4rem !important; font-size: 0.62rem !important; min-height: 28px !important; gap: 2px; }
+            .nav-item { padding: 0.5rem 0.7rem !important; font-size: 0.66rem !important; min-height: 34px !important; }
+            html { scroll-padding-top: 56px !important; }
+
+            /* Filter / CTA controls */
+            .filter-matrix { gap: 0.35rem !important; margin-bottom: 1rem !important; }
+            .filter-btn { padding: 0.38rem 0.6rem !important; font-size: 0.62rem !important; min-height: 30px !important; }
+            .marquee-container { font-size: 0.72rem !important; padding: 0.4rem 0 !important; letter-spacing: 1px !important; }
+
+            /* Systems Bay — shrink artifacts ~35% */
+            .station-grid { gap: 0.85rem !important; }
+            .station-col { gap: 0.7rem !important; }
+            .station-core-wrapper { margin-bottom: 0.3rem !important; }
+            .orbital-hub { width: 118px !important; height: 118px !important; }
+            .hub-text { font-size: 0.62rem !important; letter-spacing: 1px !important; }
+            .station-module { padding: 0.7rem !important; }
+            .station-module::after { display: none; }
+            .module-telemetry { padding-bottom: 4px !important; margin-bottom: 8px !important; }
+            .telemetry-text { font-size: 0.52rem !important; }
+            .module-title { font-size: 0.68rem !important; margin-bottom: 0.55rem !important; letter-spacing: 1px !important; }
+            .tech-terminals { gap: 5px !important; }
+            .terminal-node { width: 32px !important; height: 32px !important; font-size: 0.95rem !important; }
+            .terminal-node svg { width: 16px !important; height: 16px !important; }
+
+            /* Projects — compact cards */
+            .project-list { gap: 0.85rem !important; }
+            .project-info { padding: 0.75rem !important; }
+            .project-title { font-size: clamp(0.88rem, 3.8vw, 1.05rem) !important; margin-bottom: 0.3rem !important; }
+            .project-description { font-size: 0.66rem !important; line-height: 1.45 !important; margin-bottom: 0.7rem !important; }
+            ul.project-description { padding-left: 0.9rem !important; }
+            ul.project-description li { margin-bottom: 0.15rem !important; }
+            .tag-list { gap: 0.28rem !important; margin-bottom: 0.6rem !important; }
+            .tag { font-size: 0.54rem !important; padding: 0.16rem 0.38rem !important; }
+            .card-footer a { font-size: 1.05rem !important; }
+            .project-schema { min-height: 150px !important; padding: 0.6rem !important; }
+            .flow-svg { max-width: 160px !important; max-height: 180px !important; }
+
+            /* Protocols — tighter stack */
+            .circuit-wrapper { padding: 0.15rem 0 !important; }
+            .protocol-stage { padding: 0.6rem 0.5rem 0.6rem 0 !important; }
+            .protocol-stack { gap: 0.5rem !important; margin-left: 28px !important; }
+            .protocol-spine-svg { left: 10px !important; width: 22px !important; }
+            .proto-rocket { left: 10px !important; font-size: 20px !important; }
+            .protocol-card { padding: 0.6rem 0.65rem 0.55rem 0.65rem !important; }
+            .protocol-card .module-telemetry { padding-bottom: 4px !important; margin-bottom: 6px !important; }
+            .proto-telemetry-text, .proto-status { font-size: 0.52rem !important; }
+            .proto-num { width: 20px !important; height: 20px !important; min-width: 20px !important; font-size: 0.58rem !important; }
+            .proto-icon { width: 20px !important; height: 20px !important; min-width: 20px !important; font-size: 0.68rem !important; }
+            .proto-title { font-size: 0.72rem !important; letter-spacing: 0.8px !important; }
+            .proto-desc { font-size: 0.66rem !important; line-height: 1.4 !important; }
+            .proto-detail { font-size: 0.62rem !important; padding-left: 6px !important; }
+
+            /* Timeline */
+            .timeline { gap: 0.7rem !important; margin-left: 0.6rem !important; padding-left: 1rem !important; border-left-width: 3px !important; }
+            .timeline-item { padding: 0.7rem !important; }
+            .timeline-item::before { left: -1.55rem !important; width: 0.7rem !important; height: 0.7rem !important; top: 0.95rem !important; }
+            .timeline-item h3 { font-size: 0.82rem !important; }
+            .timeline-item p { font-size: 0.7rem !important; line-height: 1.45 !important; }
+
+            /* Leadership / milestones / comms */
+            #leadership .project-list { gap: 0.7rem !important; }
+            #leadership .project-row { padding: 0.75rem !important; }
+            .milestone-list { gap: 0.6rem !important; }
+            .milestone-item { padding: 0.65rem 0.65rem !important; gap: 0.6rem !important; font-size: 0.7rem !important; }
+            .milestone-item i { font-size: 1rem !important; }
+            .contact-grid { gap: 0.6rem !important; }
+            .comm-channel { padding: 0.4rem !important; }
+            .channel-icon { width: 36px !important; height: 36px !important; font-size: 1.2rem !important; }
+            .channel-details { margin-left: 0.6rem !important; }
+            .channel-label { font-size: 0.55rem !important; }
+            .channel-value { font-size: 0.7rem !important; }
+            .cli-box, .node-box, .resume-box { padding: 0.9rem !important; }
+            .cli-body { font-size: 0.72rem !important; }
+        }
+
+        @media (max-width: 480px) {
+            html { font-size: 14px; }
+            #hero h1 { font-size: clamp(1.3rem, 6.5vw, 1.75rem) !important; }
+            .orbital-hub { width: 105px !important; height: 105px !important; }
+            .terminal-node { width: 30px !important; height: 30px !important; font-size: 0.85rem !important; }
+            .project-schema { min-height: 135px !important; }
+            .flow-svg { max-width: 145px !important; }
+        }
+
+        @media (max-width: 360px) {
+            .about-terminal { padding: 0.7rem 0.65rem !important; }
+            .tech-terminals { gap: 4px !important; }
+            .terminal-node { width: 28px !important; height: 28px !important; }
+        }
+
+        /* ============================================================
+           CONSISTENT GUTTER + MOBILE PROJECT FONT (system sans)
+           Ensures 16–24px side padding aligned across all sections
+           ============================================================ */
+        @media (max-width: 768px) { :root { --mobile-gutter: 24px; } }
+        @media (max-width: 480px) { :root { --mobile-gutter: 20px; } html { font-size: 14px; } }
+        @media (max-width: 375px) { :root { --mobile-gutter: 16px; } }
+
+        @media (max-width: 768px) {
+            /* Outer sections keep 100% bleed backgrounds, inner content follows gutter */
+            #hero, #tech, #projects, .timeline-section, .standard-section, footer {
+                padding-left: var(--mobile-gutter) !important;
+                padding-right: var(--mobile-gutter) !important;
+            }
+            .tech-nav { padding-left: var(--mobile-gutter) !important; padding-right: var(--mobile-gutter) !important; }
+            .marquee-container { padding-left: var(--mobile-gutter); padding-right: var(--mobile-gutter); }
+
+            /* Normalize prior vw hacks to gutter */
+            .about-terminal { max-width: 640px !important; width: 100% !important; }
+            #leadership .project-row { max-width: 100% !important; }
+            .comm-channel { max-width: 100% !important; }
+
+            /* Project description — compact sans on mobile only, desktop stays mono */
+            .project-description, ul.project-description, ul.project-description li,
+            .project-info .project-description {
+                font-family: 'IBM Plex Sans', Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif !important;
+                letter-spacing: -0.01em !important;
+                word-spacing: -0.015em !important;
+                line-height: 1.42 !important;
+                font-weight: 400 !important;
+            }
+            .project-description { font-size: 0.66rem !important; }
+            ul.project-description li { font-size: inherit !important; }
+        }
+        @media (max-width: 480px) {
+            .project-description, ul.project-description { font-size: 0.64rem !important; line-height: 1.4 !important; }
+        }
+
+        /* ============================================================
+           SECURE COMMS — MOBILE ICON-ONLY (desktop verbose untouched)
+           Hides verbose details on mobile, keeps same links & brand hovers
+           ============================================================ */
+        @media (max-width: 768px) {
+            #comms .contact-grid { gap: 0.9rem !important; justify-content: center !important; }
+            #comms .comm-channel{
+                width:44px !important; height:44px !important; min-width:44px !important;
+                padding:0 !important; justify-content:center !important; align-items:center !important;
+                border-radius:2px !important; flex:0 0 44px !important; overflow:hidden !important;
+            }
+            #comms .channel-icon{
+                width:100% !important; height:100% !important; margin:0 !important;
+                font-size:1.55rem !important; border-radius:2px !important;
+            }
+            #comms .channel-details { display:none !important; }
+            #comms .comm-channel:hover, #comms .comm-channel:active, #comms .comm-channel:focus-visible{
+                transform: translateY(-3px);
+            }
+        }
+        @media (max-width: 480px) {
+            #comms .contact-grid{ gap:0.75rem !important; }
+            #comms .comm-channel{ width:42px !important; height:42px !important; min-width:42px !important; flex:0 0 42px !important; }
+            #comms .channel-icon{ font-size:1.5rem !important; }
+        }
     </style>
 </head>
 <body>
@@ -1432,14 +1832,19 @@
         </div>
     </div>
 
-    <nav class="tech-nav">
-        <div class="nav-tools">
-            <button class="nav-tool-btn" onclick="toggleCLI()" title="Open CLI Terminal">💻 CLI</button>
-            <button class="nav-tool-btn" onclick="toggleResumeModal()" title="View Flight Plan">📋 Resume</button>
-            <button class="nav-tool-btn" onclick="toggleCRT()" title="Toggle CRT Filter">📺 CRT</button>
-            <button class="nav-tool-btn" id="audio-toggle-btn" onclick="toggleAudio()" title="Toggle Sound">🔊 Audio</button>
+    <nav class="tech-nav" id="main-nav">
+        <div class="nav-brand-row">
+            <div class="nav-tools">
+                <button class="nav-tool-btn" onclick="toggleCLI()" title="Open CLI Terminal">💻 CLI</button>
+                <button class="nav-tool-btn" onclick="toggleResumeModal()" title="View Flight Plan">📋 Resume</button>
+                <button class="nav-tool-btn" onclick="toggleCRT()" title="Toggle CRT Filter">📺 CRT</button>
+                <button class="nav-tool-btn" id="audio-toggle-btn" onclick="toggleAudio()" title="Toggle Sound">🔊 Audio</button>
+            </div>
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links" onclick="toggleNav()">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
         </div>
-        <ul class="nav-links">
+        <ul class="nav-links" id="nav-links">
             <li><a href="#hero" class="nav-item" onclick="playAudio()">INIT</a></li>
             <li><a href="#tech" class="nav-item" onclick="playAudio()">CORE</a></li>
             <li><a href="#projects" class="nav-item" onclick="playAudio()">MISSIONS</a></li>
@@ -2236,7 +2641,7 @@
             <h2>SECURE COMMS LINK</h2>
             <div class="comms-container">
                 <div class="contact-grid">
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=Saksham3204@gmail.com" target="_blank" rel="noopener noreferrer" class="comm-channel gmail" onclick="playAudio()">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=Saksham3204@gmail.com" target="_blank" rel="noopener noreferrer" class="comm-channel gmail" aria-label="Email Saksham3204@gmail.com" onclick="playAudio()">
                         <div class="channel-icon"><i class="fa-solid fa-envelope"></i></div>
                         <div class="channel-details">
                             <span class="channel-label">GMAIL_UPLINK</span>
@@ -2244,7 +2649,7 @@
                         </div>
                     </a>
                     
-                    <a href="https://linkedin.com/in/saksham-gupta-b68601288" class="comm-channel linkedin" target="_blank" rel="noopener noreferrer" onclick="playAudio()">
+                    <a href="https://linkedin.com/in/saksham-gupta-b68601288" class="comm-channel linkedin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn saksham-gupta" onclick="playAudio()">
                         <div class="channel-icon"><i class="fa-brands fa-linkedin-in"></i></div>
                         <div class="channel-details">
                             <span class="channel-label">LINKEDIN_NET</span>
@@ -2252,7 +2657,7 @@
                         </div>
                     </a>
                     
-                    <a href="https://github.com/saksham7685" class="comm-channel github" target="_blank" rel="noopener noreferrer" onclick="playAudio()">
+                    <a href="https://github.com/saksham7685" class="comm-channel github" target="_blank" rel="noopener noreferrer" aria-label="GitHub saksham7685" onclick="playAudio()">
                         <div class="channel-icon"><i class="fa-brands fa-github"></i></div>
                         <div class="channel-details">
                             <span class="channel-label">GITHUB_REPO</span>
@@ -2385,6 +2790,35 @@
             document.body.classList.toggle('crt-active');
         }
 
+        /* --- Mobile Nav Toggle --- */
+        function toggleNav() {
+            playAudio();
+            const nav = document.getElementById('main-nav');
+            const btn = document.getElementById('nav-hamburger');
+            const open = nav.classList.toggle('nav-open');
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            btn.innerHTML = open ? '<i class="fa-solid fa-xmark" aria-hidden="true"></i>' : '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
+        function closeNav() {
+            const nav = document.getElementById('main-nav');
+            if (!nav || !nav.classList.contains('nav-open')) return;
+            nav.classList.remove('nav-open');
+            const btn = document.getElementById('nav-hamburger');
+            if (btn) { btn.setAttribute('aria-expanded','false'); btn.innerHTML = '<i class="fa-solid fa-bars" aria-hidden="true"></i>'; }
+            document.body.style.overflow = '';
+        }
+        // Close nav on link click, outside click, Esc, resize to desktop
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('#nav-links .nav-item').forEach(a => a.addEventListener('click', closeNav));
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeNav(); });
+            document.addEventListener('click', (e) => {
+                const nav = document.getElementById('main-nav');
+                if (nav && nav.classList.contains('nav-open') && !nav.contains(e.target)) closeNav();
+            });
+            window.addEventListener('resize', () => { if (window.innerWidth > 768) closeNav(); });
+        });
+
         /* --- Mission Filters --- */
         function filterProjects(cat) {
             playAudio();
@@ -2444,7 +2878,8 @@
         canvas.height = window.innerHeight;
 
         const shapes = [];
-        const numShapes = 45;
+        const isMobileCanvas = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+        const numShapes = isMobileCanvas ? 18 : 45;
 
         class Shape {
             constructor() {
@@ -2514,11 +2949,13 @@
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Draw constellation lines between particles and mouse if close
+            // Draw constellation lines between particles and mouse if close (skip on mobile for perf)
+            const skipLines = isMobileCanvas || window.matchMedia('(pointer: coarse)').matches;
             for (let i = 0; i < shapes.length; i++) {
                 shapes[i].update();
                 shapes[i].draw();
 
+                if (skipLines) continue;
                 const mDist = Math.hypot(shapes[i].x - mouse.x, shapes[i].y - mouse.y);
                 if (mDist < 120) {
                     ctx.strokeStyle = 'rgba(0, 229, 255, ' + (1 - mDist / 120) * 0.4 + ')';
